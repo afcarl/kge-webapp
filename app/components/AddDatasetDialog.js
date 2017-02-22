@@ -74,7 +74,8 @@ class AddDatasetDialog extends Component {
 }
 AddDatasetDialog.propTypes = {
     closeModal: PropTypes.func,
-    active: PropTypes.bool
+    active: PropTypes.bool,
+    submitNewDataset: PropTypes.func
 };
 
 // const mapStateToProps = (state) => {

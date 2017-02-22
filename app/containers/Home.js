@@ -11,7 +11,7 @@ import CircularProgress from 'material-ui/CircularProgress';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 
-import DatasetApi from './../api.js';
+// import DatasetApi from './../api.js';
 
 import DatasetTile from './../components/DatasetTile';
 import AddDatasetDialog from './../components/AddDatasetDialog';
@@ -66,18 +66,17 @@ class Home extends Component {
             left: 'auto',
             position: 'fixed',
         };
-        if (this.props.allDatasets.lenght !== 0) {
-        // if (this.state && this.state.datasets) {
-            console.log(this.props.allDatasets);
+        console.log('here', this.props.allDatasets);
+        console.log(this.props.allDatasets.length, 0);
+        if (this.props.allDatasets.length != 0 && this.props.allDatasets.length != undefined) {
+            console.log('he entrado');
             return (
                 <div>
                     <GridList cellHeight={230} cols={4} style={estilo}>
                         <Subheader>Available datasets</Subheader>
                         {
                             this.props.allDatasets.map(dataset =>
-                            // this.state.datasets.map(dataset =>
-                                <DatasetTile { ...dataset.dataset }
-                                             key={ dataset.dataset.id }/>
+                                 <DatasetTile { ...dataset } key={ dataset.id }/>
                             )
                         }
                     </GridList>
@@ -90,6 +89,7 @@ class Home extends Component {
                 </div>
             );
         }
+        console.log('estoy fuera');
         return (
             <div style={circularProgressStyle}>
                 <CircularProgress size={100} thickness={4} />
@@ -107,10 +107,12 @@ Home.propTypes = {
     showModalAddDataset: PropTypes.bool
 };
 const mapStateToProps = (state) => {
-    console.log('home-map');
     return {
         showModalAddDataset: state.showModalAddDataset,
-        allDatasets: state.allDatasets
+        allDatasets: state.allDatasets.filter((dataset) => {
+            // As dataset array may contain unused entries, they must be cleaned out
+            return dataset !== undefined;
+        })
     };
 };
 

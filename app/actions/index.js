@@ -27,9 +27,21 @@ export function apiGetDatasets() {
         type: types.GET_DATASETS,
     };
 }
+export function apiGetDataset(id) {
+    return {
+        type: types.GET_DATASET,
+        id
+    };
+}
 export function apiPostDatasets(dataset) {
     return {
         type: types.POST_DATASET,
         dataset
+    };
+}
+export function apiDeleteDataset(id) {
+    return {
+        type: types.DELETE_DATASET,
+        id
     };
 }

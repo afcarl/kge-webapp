@@ -2,6 +2,16 @@ import { routerReducer as routing } from 'react-router-redux';
 import { combineReducers } from 'redux';
 import * as types from '../actions/types';
 
+function datasetToList(initialDatasetList, newDatasetList) {
+    // console.log('tolist', newDatasetList, initialDatasetList);
+    newDatasetList.forEach((dataset) => {
+        // console.log(initialDatasetList);
+        initialDatasetList[dataset.id] = dataset;
+    });
+    // console.log('last', initialDatasetList);
+    return initialDatasetList;
+}
+
 const filter = (state = '', action) => {
     switch (action.type) {
         case types.FILTER:
@@ -35,7 +45,12 @@ function showModalAddDataset(state = types.SHOW_MODAL_ADD_DATASET, action) {
 function allDatasets(state = [], action) {
     switch (action.type) {
         case 'GET_DATASETS_RECEIVED':
-            return action.datasets;
+            return datasetToList([...state], action.datasets);
+        case types.GET_DATASET_RECEIVED:
+            return datasetToList([...state], [action.dataset]);
+        case 'ADD_DATASET':
+            console.log('Add Dataset', action.dataset);
+            return [...state, action.dataset];
         default:
             return state;
     }

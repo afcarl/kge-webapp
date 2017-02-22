@@ -7,6 +7,10 @@ import IconButton from 'material-ui/IconButton';
 import StarBorder from 'material-ui/svg-icons/toggle/star-border';
 
 class DatasetTile extends Component {
+    constructor(props) {
+        super(props);
+    }
+
     _getName() {
         return this.props.name;
     }
@@ -36,8 +40,8 @@ class DatasetTile extends Component {
 }
 DatasetTile.propTypes = {
     closeModal: PropTypes.func,
-    description: PropTypes.str,
-    name: PropTypes.str,
-    id: PropTypes.int,
+    description: PropTypes.any,
+    name: PropTypes.any,
+    id: PropTypes.any,
 };
 export default DatasetTile;

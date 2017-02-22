@@ -10,6 +10,22 @@ class DatasetApi {
     getAll(cache = true) {
         return fetch(this.baseUri + '/datasets?use_cache=' + cache);
     }
+
+    postDataset(name, description, datasetType = 1) {
+        return fetch(this.baseUri + '/datasets?dataset_type=' + datasetType, {
+            method: 'POST',
+            body: JSON.stringify({
+                name,
+                description
+            })
+        });
+    }
+
+    deleteDataset(datasetId) {
+        return fetch(this.baseUri + '/datasets/' + datasetId, {
+            method: 'DELETE'
+        });
+    }
 }
 
 export default DatasetApi;
