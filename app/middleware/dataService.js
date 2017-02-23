@@ -1,8 +1,9 @@
 import DatasetApi from '../api.js';
 import * as types from '../actions/types';
-import { apiGetDatasets } from '../actions';
+import { apiGetDatasets, apiGetDataset } from '../actions';
+import { datasetsReceived, datasetReceived, datasetDeleteSuccess } from '../actions/async';
 
-const dataService = () => next => action => {
+const dataService = store => next => action => {
     const api = new DatasetApi('http://valdemoro.dia.fi.upm.es:6789');
     /*  Pass all actions through by default */
     next(action);
@@ -14,10 +15,10 @@ const dataService = () => next => action => {
                 return response.json();
             }).then((datasets) => {
                 // console.log("Datasets recibidos", datasets);
-                return next({
-                    type: types.GET_DATASETS_RECEIVED,
-                    datasets: datasets.map((dataset)=>{return dataset.dataset;})
-                });
+                return next(datasetsReceived(
+                    // Convert dataset.dataset into dataset
+                    datasets.map((dataset)=>{return dataset.dataset;})
+                ));
             });
             break;
 
@@ -26,32 +27,22 @@ const dataService = () => next => action => {
             api.getDataset(action.id).then((response) => {
                 return response.json();
             }).then((dataset) => {
-                // console.log('Dataset', dataset);
-                return next({
-                    type: types.GET_DATASET_RECEIVED,
-                    dataset: dataset.dataset
-                });
+                return next(datasetReceived(dataset.dataset));
             });
             break;
 
         case types.POST_DATASET:
-            console.log('API', action);
             api.postDataset(action.dataset.title, action.dataset.description).then((response) => {
-                console.log('Respuesta', response);
                 return response.json();
             }).then((dataset) => {
-                console.log('El dataset:', dataset);
-                return next({
-                    type: 'ADD_DATASET',
-                });
+                return store.dispatch(apiGetDataset(dataset.dataset.id));
             });
             break;
 
         case types.DELETE_DATASET:
-            console.log('APIDELETE:', action);
+            // console.log('Delete this dataset:', action);
             api.deleteDataset(action.id).then((response) => {
-                console.log('respuesta delete:', response);
-                return next(apiGetDatasets());
+                return next(datasetDeleteSuccess(action.id));
             });
             break;
 

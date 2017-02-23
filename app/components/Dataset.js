@@ -1,5 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
+import { browserHistory } from 'react-router';
 
 // Actions
 import { apiDeleteDataset, apiGetDataset } from '../actions';
@@ -21,15 +22,16 @@ class Dataset extends Component {
 
     }
 
+    onDeleteDataset = () => {
+        console.log('Delete Dataset');
+        this.props.deleteDataset(this.props.params.id);
+        browserHistory.push('/');
+    }
+
     render() {
         const style = {
-        //   height: '95%',
-        //   width: '46%',
             margin: '1em 1%',
-        //   textAlign: 'center',
             display: 'inline-block',
-        //   flex: 'flex-grow',
-        //   flexGrow: 1
         };
 
         const styRightItem = {
@@ -68,7 +70,7 @@ class Dataset extends Component {
                         </ul>
 
                         <p>{JSON.stringify(this.props.dataset)}</p>
-                        <RaisedButton label="Delete" style={buttonStyle} onTouchTap={()=>this.props.deleteDataset(this.props.params.id)} />
+                        <RaisedButton label="Delete" style={buttonStyle} onTouchTap={this.onDeleteDataset} />
                     </Paper>
                 </div>
             );
@@ -93,6 +95,7 @@ Dataset.displayName = 'Dataset';
 const mapStateToProps = (state, ownProps) => {
     return {
         dataset: state.allDatasets.filter((dataset) => {
+            // Extract from state.allDatasets the selected dataset for this screen
             if(dataset !== undefined &&
                parseInt(dataset.id, 10) === parseInt(ownProps.params.id, 10)) {
                 return dataset;

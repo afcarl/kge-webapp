@@ -44,13 +44,14 @@ function showModalAddDataset(state = types.SHOW_MODAL_ADD_DATASET, action) {
 
 function allDatasets(state = [], action) {
     switch (action.type) {
-        case 'GET_DATASETS_RECEIVED':
+        case types.GET_DATASETS_RECEIVED:
             return datasetToList([...state], action.datasets);
         case types.GET_DATASET_RECEIVED:
             return datasetToList([...state], [action.dataset]);
-        case 'ADD_DATASET':
-            console.log('Add Dataset', action.dataset);
-            return [...state, action.dataset];
+        case types.DELETE_DATASET_SUCCESS:
+            const newState = [...state];
+            newState[action.id] = undefined;
+            return newState;
         default:
             return state;
     }
