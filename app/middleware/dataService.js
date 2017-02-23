@@ -1,6 +1,6 @@
 import DatasetApi from '../api.js';
 import * as types from '../actions/types';
-import { apiGetDatasets, apiGetDataset } from '../actions';
+import { apiGetDataset } from '../actions';
 import { datasetsReceived, datasetReceived, datasetDeleteSuccess } from '../actions/async';
 
 const dataService = store => next => action => {
@@ -41,7 +41,7 @@ const dataService = store => next => action => {
 
         case types.DELETE_DATASET:
             // console.log('Delete this dataset:', action);
-            api.deleteDataset(action.id).then((response) => {
+            api.deleteDataset(action.id).then(() => {
                 return next(datasetDeleteSuccess(action.id));
             });
             break;

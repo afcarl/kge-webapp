@@ -5,7 +5,7 @@ import { browserHistory } from 'react-router';
 // Actions
 import { apiDeleteDataset, apiGetDataset } from '../actions';
 
-import DatasetApi from './../api.js';
+// Material Ui components
 import Paper from 'material-ui/Paper';
 import RaisedButton from 'material-ui/RaisedButton';
 
@@ -13,10 +13,10 @@ class Dataset extends Component {
 
     constructor(props) {
         super(props);
-        console.log('soy pagina dataset', props);
-        this.api = new DatasetApi('http://valdemoro.dia.fi.upm.es:6789');
         this.props.reloadDataset(this.props.params.id);
-        this.state = {dataset: props.dataset};
+        this.state = {
+            editMode: false,
+        };
     }
     componentWillMount() {
 
@@ -27,7 +27,9 @@ class Dataset extends Component {
         this.props.deleteDataset(this.props.params.id);
         browserHistory.push('/');
     }
-
+    onEdit = () => {
+        this.setState({editMode: !this.state.editMode});
+    }
     render() {
         const style = {
             margin: '1em 1%',
@@ -60,7 +62,12 @@ class Dataset extends Component {
                     </Paper>
                     <Paper style={styLeftItem} zDepth={1}>
                         <h1>{this.props.dataset.name}</h1>
-                        <h2>{this.props.dataset.description}</h2>
+                        {
+                            this.state.editMode ?
+                                <h2>EDIT:{this.props.dataset.description}</h2>
+                            :
+                                <h2>FIJO:{this.props.dataset.description}</h2>
+                        }
 
                         <ul>
                             <li>{this.props.dataset.dataset_type}</li>
@@ -71,6 +78,7 @@ class Dataset extends Component {
 
                         <p>{JSON.stringify(this.props.dataset)}</p>
                         <RaisedButton label="Delete" style={buttonStyle} onTouchTap={this.onDeleteDataset} />
+                        <RaisedButton label="Edit" style={buttonStyle} onTouchTap={this.onEdit} />
                     </Paper>
                 </div>
             );

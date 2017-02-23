@@ -11,8 +11,7 @@ import CircularProgress from 'material-ui/CircularProgress';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 
-// import DatasetApi from './../api.js';
-
+// Custom components
 import DatasetTile from './../components/DatasetTile';
 import AddDatasetDialog from './../components/AddDatasetDialog';
 
@@ -20,28 +19,8 @@ class Home extends Component {
 
     constructor(props) {
         super(props);
-        console.log('HOME: ', props);
-        // this.api = new DatasetApi('http://valdemoro.dia.fi.upm.es:6789');
         this.props.onLoadDatasets();
     }
-
-    // componentWillMount() {
-    //     this.api.getAll(true).then((response) => {
-    //         return response.json();
-    //     }).then((datasets) => {
-    //         this.setState({datasets: datasets});
-    //         console.log(datasets);
-    //     });
-    // }
-
-    // _addDataset = () => {
-    //     console.log("Add dataset!!!");
-    //     this.setState({add_dataset_open: true});
-    // }
-    // _closeDataset = () => {
-    //     console.log("CERRARR!!");
-    //     this.setState({open: false});
-    // }
     render() {
         let estilo = {
             display: 'flex',
@@ -66,10 +45,8 @@ class Home extends Component {
             left: 'auto',
             position: 'fixed',
         };
-        console.log('here', this.props.allDatasets);
-        console.log(this.props.allDatasets.length, 0);
-        if (this.props.allDatasets.length != 0 && this.props.allDatasets.length != undefined) {
-            console.log('he entrado');
+        if (this.props.allDatasets.length !== 0 &&
+            this.props.allDatasets.length !== undefined) {
             return (
                 <div>
                     <GridList cellHeight={230} cols={4} style={estilo}>
@@ -89,7 +66,6 @@ class Home extends Component {
                 </div>
             );
         }
-        console.log('estoy fuera');
         return (
             <div style={circularProgressStyle}>
                 <CircularProgress size={100} thickness={4} />
