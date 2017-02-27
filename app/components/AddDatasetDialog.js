@@ -78,10 +78,6 @@ AddDatasetDialog.propTypes = {
     submitNewDataset: PropTypes.func
 };
 
-// const mapStateToProps = (state) => {
-//     return {};
-// };
-
 const mapDispatchToProps = (dispatch) => {
     return {
         submitNewDataset: (dataset) => {

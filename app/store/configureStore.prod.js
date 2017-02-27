@@ -1,9 +1,13 @@
-import { createStore } from 'redux';
+import { applyMiddleware, createStore } from 'redux';
 import rootReducer from '../reducers';
+// import DevTools from '../containers/DevTools';
+import dataService from '../middleware/dataService';
 
 export default function configureStore(initialState) {
-    return createStore(
+    const store = createStore(
         rootReducer,
-        initialState
+        initialState,
+        applyMiddleware(dataService)
     );
+    return store;
 }

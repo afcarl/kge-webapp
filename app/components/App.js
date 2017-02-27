@@ -1,55 +1,27 @@
-// import React, { PropTypes } from 'react';
-// import { Link } from 'react-router';
-// import { footer } from '../styles/footer.scss';
-//
-// const App = ({ children }) =>
-//     <div>
-//         <h1>Filter table</h1>
-//         { children }
-//         <footer className={footer}>
-//             <Link to="/">Filterable Table</Link>
-//             <Link to="/about">About</Link>
-//         </footer>
-//     </div>;
-//
-// App.propTypes = {
-//     children: PropTypes.object
-// };
-//
-// export default App;
-
 import React, { PropTypes, Component } from 'react';
-// import { connect } from 'react-redux'
-// var classnames = require('classnames');
 import classnames from 'classnames';
-import Nav from './Nav';
 import { connect } from 'react-redux';
-import { toggleDrawerBar } from './../actions';
 
-import Drawer from 'material-ui/Drawer';
-import MenuItem from 'material-ui/MenuItem';
+// Visual components
+import Nav from './Nav';
+import DrawerNav from './DrawerNav';
+
+// Material UI Components
 import Paper from 'material-ui/Paper';
 
+import { toggleDrawerBar } from './../actions';
 import { appContent, expanded } from '../styles/index.scss';
-// import { filterableTable } from '../styles/filterableTable.scss';
 
 class Layout extends Component {
     constructor(props) {
         super(props);
-        this.state = {open: true}; // explore redux to change state
     }
 
-    handleToggle = () => this.setState({open: !this.state.open});
-
     render() {
-        let forceNavDown = {'top': '64px', zIndex: 100};
         return (
             <Paper zDepth={0}>
                 <Nav menuClick={this.props.onMenuClick}/>
-                <Drawer open={this.props.drawerNav} containerStyle={forceNavDown}>
-                    <MenuItem>Menu Item</MenuItem>
-                    <MenuItem>Menu Item 2</MenuItem>
-                </Drawer>
+                <DrawerNav isOpen={this.props.drawerNav}/>
                 <main
                     className={classnames(appContent, {[expanded]: this.props.drawerNav})}
                 >
@@ -77,7 +49,6 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         onMenuClick: (id) => {
-            console.log('click');
             dispatch(toggleDrawerBar(id));
         }
     };

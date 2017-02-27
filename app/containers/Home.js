@@ -2,8 +2,6 @@ import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import { showModalAddDataset, apiGetDatasets } from './../actions';
 
-// import {Link} from 'react-router'
-
 // material-ui components
 import {GridList} from 'material-ui/GridList';
 import Subheader from 'material-ui/Subheader';
