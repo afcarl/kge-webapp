@@ -46,7 +46,7 @@ function allDatasets(state = [], action) {
     switch (action.type) {
         case types.GET_DATASETS_RECEIVED:
             return datasetToList([...state], action.datasets);
-        case types.GET_DATASET_RECEIVED:
+        case types.GET_DATASET_SUCCESS:
             return datasetToList([...state], [action.dataset]);
         case types.DELETE_DATASET_SUCCESS:
             const newState = [...state];
@@ -56,12 +56,28 @@ function allDatasets(state = [], action) {
             return state;
     }
 }
-
+function datasetOnUpdate(state = [], action) {
+    const datasetStatus = [...state];
+    switch (action.type) {
+        case types.PUT_DATASET:
+            datasetStatus[action.dataset.id] = false;
+            return datasetStatus;
+        case types.GET_DATASET:
+            datasetStatus[action.id] = false;
+            return datasetStatus;
+        case types.GET_DATASET_SUCCESS:
+            datasetStatus[action.dataset.id] = true;
+            return datasetStatus;
+        default:
+            return state;
+    }
+}
 const rootReducer = combineReducers({
     filter,
     drawerNav,
     allDatasets,
     showModalAddDataset,
+    datasetOnUpdate,
     routing
 });
 

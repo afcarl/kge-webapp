@@ -9,7 +9,7 @@ export function datasetsReceived(datasets) {
 
 export function datasetReceived(dataset) {
     return {
-        type: types.GET_DATASET_RECEIVED,
+        type: types.GET_DATASET_SUCCESS,
         dataset
     };
 }

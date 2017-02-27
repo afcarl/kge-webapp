@@ -3,11 +3,19 @@ import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
 
 // Actions
-import { apiDeleteDataset, apiGetDataset } from '../actions';
+import { apiDeleteDataset, apiGetDataset, apiPutDataset } from '../actions';
 
 // Material Ui components
 import Paper from 'material-ui/Paper';
 import RaisedButton from 'material-ui/RaisedButton';
+import IconButton from 'material-ui/IconButton';
+import TextField from 'material-ui/TextField';
+import EditMode from 'material-ui/svg-icons/editor/mode-edit';
+import ActionDone from 'material-ui/svg-icons/action/done';
+import CircularProgress from 'material-ui/CircularProgress';
+import Dialog from 'material-ui/Dialog';
+import FlatButton from 'material-ui/FlatButton';
+
 
 class Dataset extends Component {
 
@@ -16,6 +24,8 @@ class Dataset extends Component {
         this.props.reloadDataset(this.props.params.id);
         this.state = {
             editMode: false,
+            description: '',
+            deleteDialogOpen: false,
         };
     }
     componentWillMount() {
@@ -28,7 +38,35 @@ class Dataset extends Component {
         browserHistory.push('/');
     }
     onEdit = () => {
-        this.setState({editMode: !this.state.editMode});
+        this.setState({
+            editMode: !this.state.editMode,
+            description: this.props.dataset.description,
+        });
+    }
+    onDone = () => {
+        console.log('Update dataset description');
+        this.props.updateDataset({
+            id: this.props.params.id,
+            description: this.state.description,
+        });
+        this.setState({
+            editMode: false,
+        });
+    }
+    handleDescriptionChange = (event) => {
+        this.setState({
+            description: event.target.value,
+        });
+    }
+    handleDeleteDialogOpen = () => {
+        this.setState({deleteDialogOpen: true});
+    }
+    handleDeleteDialogClose = () => {
+        this.setState({deleteDialogOpen: false});
+    }
+    handleDeleteDialogDelete = () => {
+        this.handleDeleteDialogClose();
+        this.onDeleteDataset();
     }
     render() {
         const style = {
@@ -53,7 +91,21 @@ class Dataset extends Component {
         const buttonStyle = {
             margin: 12,
         };
-
+        const circularProgressStyle = {
+            padding: '0em 1em',
+        };
+        const deleteActions = [
+            <FlatButton
+                label="Cancel"
+                primary={true}
+                onTouchTap={this.handleDeleteDialogClose}
+            />,
+            <FlatButton
+                label="Delete"
+                primary={true}
+                onTouchTap={this.handleDeleteDialogDelete}
+            />,
+        ];
         if(this.props.dataset !== [] && this.props.dataset !== undefined) {
             return (
                 <div style={styFlexContainer}>
@@ -61,12 +113,34 @@ class Dataset extends Component {
                         'Imagen'
                     </Paper>
                     <Paper style={styLeftItem} zDepth={1}>
-                        <h1>{this.props.dataset.name}</h1>
+
+                        <h1>
+                            {this.props.dataset.name}
+                            {this.props.datasetState === false ?
+                            <span><CircularProgress thickness={3}
+                                style={circularProgressStyle}/></span>
+                            : <span></span>}
+                        </h1>
                         {
                             this.state.editMode ?
-                                <h2>EDIT:{this.props.dataset.description}</h2>
+                                <div>
+                                <TextField
+                                    hintText="Dataset description"
+                                    value={this.state.description}
+                                    floatingLabelText="Dataset description"
+                                    onChange={this.handleDescriptionChange}
+                                />
+                                <IconButton tooltip="Done" onTouchTap={this.onDone}>
+                                    <ActionDone />
+                                </IconButton>
+                                </div>
                             :
-                                <h2>FIJO:{this.props.dataset.description}</h2>
+                                <h2>
+                                    {this.props.dataset.description}
+                                    <IconButton tooltip="Edit" onTouchTap={this.onEdit}>
+                                        <EditMode />
+                                    </IconButton>
+                                </h2>
                         }
 
                         <ul>
@@ -75,11 +149,19 @@ class Dataset extends Component {
                             <li>Entities: {this.props.dataset.entities}</li>
                             <li>Relations {this.props.dataset.relations}</li>
                         </ul>
-
+                        <p>Dataset State: {this.datasetState}</p>
                         <p>{JSON.stringify(this.props.dataset)}</p>
-                        <RaisedButton label="Delete" style={buttonStyle} onTouchTap={this.onDeleteDataset} />
+                        <RaisedButton label="Delete" style={buttonStyle} onTouchTap={this.handleDeleteDialogOpen} />
                         <RaisedButton label="Edit" style={buttonStyle} onTouchTap={this.onEdit} />
                     </Paper>
+                    <Dialog
+                      actions={deleteActions}
+                      modal={false}
+                      open={this.state.deleteDialogOpen}
+                      onRequestClose={this.handleDeleteDialogClose}
+                    >
+                      Delete dataset?
+                    </Dialog>
                 </div>
             );
         }
@@ -96,11 +178,14 @@ Dataset.propTypes = {
     params: PropTypes.object,
     deleteDataset: PropTypes.func,
     reloadDataset: PropTypes.func,
+    updateDataset: PropTypes.func,
+    datasetState: PropTypes.any,
     dataset: PropTypes.any
 };
 Dataset.displayName = 'Dataset';
 
 const mapStateToProps = (state, ownProps) => {
+    console.log('Status:', state.datasetOnUpdate[ownProps.params.id]);
     return {
         dataset: state.allDatasets.filter((dataset) => {
             // Extract from state.allDatasets the selected dataset for this screen
@@ -109,7 +194,8 @@ const mapStateToProps = (state, ownProps) => {
                 return dataset;
             }
             return undefined;
-        })[0]
+        })[0],
+        datasetState: state.datasetOnUpdate[ownProps.params.id],
     };
 };
 
@@ -120,6 +206,9 @@ const mapDispatchToProps = (dispatch) => {
         },
         reloadDataset: (id) => {
             dispatch(apiGetDataset(id));
+        },
+        updateDataset: (dataset) => {
+            dispatch(apiPutDataset(dataset));
         }
     };
 };

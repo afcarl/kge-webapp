@@ -20,7 +20,14 @@ class DatasetApi {
             })
         });
     }
-
+    updateDataset(id, description) {
+        return fetch(this.baseUri + '/datasets/' + id, {
+            method: 'PUT',
+            body: JSON.stringify({
+                description
+            })
+        });
+    }
     deleteDataset(datasetId) {
         return fetch(this.baseUri + '/datasets/' + datasetId, {
             method: 'DELETE'

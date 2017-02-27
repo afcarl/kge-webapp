@@ -46,6 +46,15 @@ const dataService = store => next => action => {
             });
             break;
 
+        case types.PUT_DATASET:
+            // console.log('Update (PUT) dataset', action);
+            api.updateDataset(action.dataset.id, action.dataset.description).then((response) => {
+                return response.json();
+            }).then((dataset) => {
+                return next(datasetReceived(dataset.dataset));
+            });
+            break;
+
         default:
             break;
     }
