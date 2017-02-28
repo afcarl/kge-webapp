@@ -2,8 +2,7 @@ import DatasetApi from '../api';
 import TasksApi from '../TasksApi';
 import * as types from '../actions/types';
 import { apiGetDataset } from '../actions';
-import { datasetsReceived, datasetReceived, datasetDeleteSuccess,
-         taskIdReceived } from '../actions/async';
+import { datasetsReceived, datasetReceived, datasetDeleteSuccess } from '../actions/async';
 
 const dataService = store => next => action => {
     const api = new DatasetApi('http://valdemoro.dia.fi.upm.es:6789');
@@ -61,8 +60,8 @@ const dataService = store => next => action => {
         case types.GENERATE_TRIPLES:
             tasksApi.generateTriples(action.datasetId, action.graphPattern, action.maxLevels).then((response) => {
                 return response.json();
-            }).then((task) => {
-                return next(taskIdReceived(action.datasetId, task.task.id));
+            }).then(() => {
+                return store.dispatch(apiGetDataset(action.datasetId));
             });
             break;
 

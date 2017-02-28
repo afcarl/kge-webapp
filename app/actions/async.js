@@ -20,11 +20,3 @@ export function datasetDeleteSuccess(id) {
         id
     };
 }
-
-export function taskIdReceived(datasetId, taskId) {
-    return {
-        type: types.TASK_ID_RECEIVED,
-        datasetId,
-        taskId
-    };
-}

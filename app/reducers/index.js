@@ -72,24 +72,13 @@ function datasetOnUpdate(state = [], action) {
             return state;
     }
 }
-function allTasks(state = [], action) {
-    const tasksDatasets = [...state];
-    switch (action.type) {
-        case types.TASK_ID_RECEIVED:
-            // TODO: If more than one task, only the last task will survive
-            tasksDatasets[action.datasetId] = action.taskId;
-            return tasksDatasets;
-        default:
-            return state;
-    }
-}
+
 const rootReducer = combineReducers({
     filter,
     drawerNav,
     allDatasets,
     showModalAddDataset,
     datasetOnUpdate,
-    allTasks,
     routing
 });
 

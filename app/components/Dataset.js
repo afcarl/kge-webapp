@@ -2,8 +2,11 @@ import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
 
+// Local components
+import GenerateTriples from './GenerateTriples';
+
 // Actions
-import { apiDeleteDataset, apiGetDataset, apiPutDataset, generateTriples } from '../actions';
+import { apiDeleteDataset, apiGetDataset, apiPutDataset } from '../actions';
 
 // Material Ui components
 import Paper from 'material-ui/Paper';
@@ -26,12 +29,7 @@ class Dataset extends Component {
             editMode: false,
             description: '',
             deleteDialogOpen: false,
-            graphPattern: '',
-            levels: 0,
         };
-    }
-    componentWillMount() {
-
     }
 
     onDeleteDataset = () => {
@@ -71,19 +69,6 @@ class Dataset extends Component {
         this.onDeleteDataset();
     }
 
-    handleGraphPatternChange = (event)  => {
-        this.setState({
-            graphPattern: event.target.value,
-        });
-    }
-    handleLevelsChange = (event) => {
-        this.setState({
-            levels: event.target.value,
-        });
-    }
-    onGenerateTriples = () => {
-        this.props.generateTriples(this.props.params.id, this.state.graphPattern, this.state.levels);
-    }
     render() {
         const style = {
             margin: '1em 1%',
@@ -166,28 +151,11 @@ class Dataset extends Component {
                             <li>Entities: {this.props.dataset.entities}</li>
                             <li>Relations {this.props.dataset.relations}</li>
                         </ul>
-                        <p>Dataset State: {this.datasetState}</p>
-                        <p>{JSON.stringify(this.props.dataset)}</p>
+                        <p>Task in execution: {this.props.dataset.task} </p>
                         <RaisedButton label="Delete" style={buttonStyle} onTouchTap={this.handleDeleteDialogOpen} />
-                        <RaisedButton label="Edit" style={buttonStyle} onTouchTap={this.onEdit} />
                     </Paper>
                 </div>
-                <Paper zDepth={1}>
-                    <TextField
-                        hintText="Graph Pattern"
-                        value={this.state.graphPattern}
-                        floatingLabelText="Graph Pattern"
-                        onChange={this.handleGraphPatternChange}
-                    />
-                    <TextField
-                        hintText="Max exploration levels"
-                        value={this.state.levels}
-                        floatingLabelText="Max exploration levels"
-                        onChange={this.handleLevelsChange}
-                    />
-                <RaisedButton label="Generate Triples" style={buttonStyle} onTouchTap={this.onGenerateTriples} />
-                </Paper>
-
+                <GenerateTriples datasetId={this.props.dataset.id}/>
                 <Dialog
                   actions={deleteActions}
                   modal={false}
@@ -213,7 +181,6 @@ Dataset.propTypes = {
     deleteDataset: PropTypes.func,
     reloadDataset: PropTypes.func,
     updateDataset: PropTypes.func,
-    generateTriples: PropTypes.func,
     datasetState: PropTypes.any,
     dataset: PropTypes.any
 };
@@ -245,9 +212,6 @@ const mapDispatchToProps = (dispatch) => {
         updateDataset: (dataset) => {
             dispatch(apiPutDataset(dataset));
         },
-        generateTriples: (datasetId, graphPattern, maxLevels) => {
-            dispatch(generateTriples(datasetId, graphPattern, maxLevels));
-        }
     };
 };
 
