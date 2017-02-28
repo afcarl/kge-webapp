@@ -1,10 +1,13 @@
-import DatasetApi from '../api.js';
+import DatasetApi from '../api';
+import TasksApi from '../TasksApi';
 import * as types from '../actions/types';
 import { apiGetDataset } from '../actions';
-import { datasetsReceived, datasetReceived, datasetDeleteSuccess } from '../actions/async';
+import { datasetsReceived, datasetReceived, datasetDeleteSuccess,
+         taskIdReceived } from '../actions/async';
 
 const dataService = store => next => action => {
     const api = new DatasetApi('http://valdemoro.dia.fi.upm.es:6789');
+    const tasksApi = new TasksApi('http://valdemoro.dia.fi.upm.es:6789');
     /*  Pass all actions through by default */
     next(action);
     // console.log("middleware", action)
@@ -52,6 +55,14 @@ const dataService = store => next => action => {
                 return response.json();
             }).then((dataset) => {
                 return next(datasetReceived(dataset.dataset));
+            });
+            break;
+
+        case types.GENERATE_TRIPLES:
+            tasksApi.generateTriples(action.datasetId, action.graphPattern, action.maxLevels).then((response) => {
+                return response.json();
+            }).then((task) => {
+                return next(taskIdReceived(action.datasetId, task.task.id));
             });
             break;
 

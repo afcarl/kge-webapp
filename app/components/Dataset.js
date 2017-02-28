@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
 
 // Actions
-import { apiDeleteDataset, apiGetDataset, apiPutDataset } from '../actions';
+import { apiDeleteDataset, apiGetDataset, apiPutDataset, generateTriples } from '../actions';
 
 // Material Ui components
 import Paper from 'material-ui/Paper';
@@ -26,6 +26,8 @@ class Dataset extends Component {
             editMode: false,
             description: '',
             deleteDialogOpen: false,
+            graphPattern: '',
+            levels: 0,
         };
     }
     componentWillMount() {
@@ -68,6 +70,20 @@ class Dataset extends Component {
         this.handleDeleteDialogClose();
         this.onDeleteDataset();
     }
+
+    handleGraphPatternChange = (event)  => {
+        this.setState({
+            graphPattern: event.target.value,
+        });
+    }
+    handleLevelsChange = (event) => {
+        this.setState({
+            levels: event.target.value,
+        });
+    }
+    onGenerateTriples = () => {
+        this.props.generateTriples(this.props.params.id, this.state.graphPattern, this.state.levels);
+    }
     render() {
         const style = {
             margin: '1em 1%',
@@ -108,6 +124,7 @@ class Dataset extends Component {
         ];
         if(this.props.dataset !== [] && this.props.dataset !== undefined) {
             return (
+            <div>
                 <div style={styFlexContainer}>
                     <Paper style={styRightItem} zDepth={1}>
                         'Imagen'
@@ -154,15 +171,32 @@ class Dataset extends Component {
                         <RaisedButton label="Delete" style={buttonStyle} onTouchTap={this.handleDeleteDialogOpen} />
                         <RaisedButton label="Edit" style={buttonStyle} onTouchTap={this.onEdit} />
                     </Paper>
-                    <Dialog
-                      actions={deleteActions}
-                      modal={false}
-                      open={this.state.deleteDialogOpen}
-                      onRequestClose={this.handleDeleteDialogClose}
-                    >
-                      Delete dataset?
-                    </Dialog>
                 </div>
+                <Paper zDepth={1}>
+                    <TextField
+                        hintText="Graph Pattern"
+                        value={this.state.graphPattern}
+                        floatingLabelText="Graph Pattern"
+                        onChange={this.handleGraphPatternChange}
+                    />
+                    <TextField
+                        hintText="Max exploration levels"
+                        value={this.state.levels}
+                        floatingLabelText="Max exploration levels"
+                        onChange={this.handleLevelsChange}
+                    />
+                <RaisedButton label="Generate Triples" style={buttonStyle} onTouchTap={this.onGenerateTriples} />
+                </Paper>
+
+                <Dialog
+                  actions={deleteActions}
+                  modal={false}
+                  open={this.state.deleteDialogOpen}
+                  onRequestClose={this.handleDeleteDialogClose}
+                >
+                  <p>Do you really want to delete <b>{this.props.dataset.name}</b> dataset?</p>
+                </Dialog>
+            </div>
             );
         }
         return (
@@ -179,6 +213,7 @@ Dataset.propTypes = {
     deleteDataset: PropTypes.func,
     reloadDataset: PropTypes.func,
     updateDataset: PropTypes.func,
+    generateTriples: PropTypes.func,
     datasetState: PropTypes.any,
     dataset: PropTypes.any
 };
@@ -209,6 +244,9 @@ const mapDispatchToProps = (dispatch) => {
         },
         updateDataset: (dataset) => {
             dispatch(apiPutDataset(dataset));
+        },
+        generateTriples: (datasetId, graphPattern, maxLevels) => {
+            dispatch(generateTriples(datasetId, graphPattern, maxLevels));
         }
     };
 };

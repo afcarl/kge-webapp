@@ -14,6 +14,7 @@ class DrawerNav extends Component {
             <Drawer open={this.props.isOpen} containerStyle={forceNavDown}>
                 <MenuItem>Datasets</MenuItem>
                 <MenuItem>Train Algorithms</MenuItem>
+                <MenuItem>Tasks</MenuItem>
             </Drawer>
         );
     }

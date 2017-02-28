@@ -56,3 +56,12 @@ export function apiDeleteDataset(id) {
         id
     };
 }
+
+export function generateTriples(datasetId, graphPattern, maxLevels) {
+    return {
+        type: types.GENERATE_TRIPLES,
+        datasetId,
+        graphPattern,
+        maxLevels
+    };
+}
