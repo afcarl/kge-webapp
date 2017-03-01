@@ -12,6 +12,13 @@ function datasetToList(initialDatasetList, newDatasetList) {
     return initialDatasetList;
 }
 
+function taskToList(initialTaskList, newTaskList) {
+    newTaskList.forEach((task) => {
+        initialTaskList[task.id] = task;
+    });
+    return initialTaskList;
+}
+
 const filter = (state = '', action) => {
     switch (action.type) {
         case types.FILTER:
@@ -56,6 +63,15 @@ function allDatasets(state = [], action) {
             return state;
     }
 }
+
+function allTasks(state = [], action) {
+    switch (action.type) {
+        case types.GET_TASK_RECEIVED:
+            return taskToList([...state], [action.task]);
+        default:
+            return state;
+    }
+}
 function datasetOnUpdate(state = [], action) {
     const datasetStatus = [...state];
     switch (action.type) {
@@ -77,6 +93,7 @@ const rootReducer = combineReducers({
     filter,
     drawerNav,
     allDatasets,
+    allTasks,
     showModalAddDataset,
     datasetOnUpdate,
     routing

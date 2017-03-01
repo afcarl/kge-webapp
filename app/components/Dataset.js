@@ -4,6 +4,7 @@ import { browserHistory } from 'react-router';
 
 // Local components
 import GenerateTriples from './GenerateTriples';
+import DatasetTask from './DatasetTask';
 
 // Actions
 import { apiDeleteDataset, apiGetDataset, apiPutDataset } from '../actions';
@@ -151,7 +152,7 @@ class Dataset extends Component {
                             <li>Entities: {this.props.dataset.entities}</li>
                             <li>Relations {this.props.dataset.relations}</li>
                         </ul>
-                        <p>Task in execution: {this.props.dataset.task} </p>
+                        <DatasetTask taskId={this.props.dataset.task}/>
                         <RaisedButton label="Delete" style={buttonStyle} onTouchTap={this.handleDeleteDialogOpen} />
                     </Paper>
                 </div>

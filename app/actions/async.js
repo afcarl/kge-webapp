@@ -7,6 +7,13 @@ export function datasetsReceived(datasets) {
     };
 }
 
+export function taskReceived(task) {
+    return {
+        type: types.GET_TASK_RECEIVED,
+        task
+    };
+}
+
 export function datasetReceived(dataset) {
     return {
         type: types.GET_DATASET_SUCCESS,

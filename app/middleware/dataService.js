@@ -2,7 +2,7 @@ import DatasetApi from '../api';
 import TasksApi from '../TasksApi';
 import * as types from '../actions/types';
 import { apiGetDataset } from '../actions';
-import { datasetsReceived, datasetReceived, datasetDeleteSuccess } from '../actions/async';
+import { datasetsReceived, datasetReceived, datasetDeleteSuccess, taskReceived } from '../actions/async';
 
 const dataService = store => next => action => {
     const api = new DatasetApi('http://valdemoro.dia.fi.upm.es:6789');
@@ -61,7 +61,16 @@ const dataService = store => next => action => {
             tasksApi.generateTriples(action.datasetId, action.graphPattern, action.maxLevels).then((response) => {
                 return response.json();
             }).then(() => {
+                // Maybe is better to do an GET_TASK action
                 return store.dispatch(apiGetDataset(action.datasetId));
+            });
+            break;
+
+        case types.GET_TASK:
+            tasksApi.getTask(action.id).then((response) => {
+                return response.json();
+            }).then((task) => {
+                return next(taskReceived(task.task.id));
             });
             break;
 
