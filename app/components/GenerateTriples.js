@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import { generateTriples } from '../actions';
 
 // Material Ui components
-import Paper from 'material-ui/Paper';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 
@@ -37,8 +36,10 @@ class GenerateTriples extends Component {
             margin: 12,
         };
         return (
-            <Paper zDepth={1}>
+            <div>
+                <h2>Generate triples from graph pattern</h2>
                 <TextField
+                    multiLine={true}
                     hintText="Graph Pattern"
                     value={this.state.graphPattern}
                     floatingLabelText="Graph Pattern"
@@ -53,7 +54,7 @@ class GenerateTriples extends Component {
                 <RaisedButton label="Generate Triples"
                               style={buttonStyle}
                               onTouchTap={this.onGenerateTriples} />
-            </Paper>
+            </div>
         );
     }
 }
@@ -63,10 +64,6 @@ GenerateTriples.propTypes = {
     generateTriples: PropTypes.func,
 };
 GenerateTriples.displayName = 'GenerateTriples';
-
-// const mapStateToProps = (state, ownProps) => {
-//     return {};
-// };
 
 const mapDispatchToProps = (dispatch) => {
     return {

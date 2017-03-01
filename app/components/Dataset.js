@@ -19,6 +19,7 @@ import ActionDone from 'material-ui/svg-icons/action/done';
 import CircularProgress from 'material-ui/CircularProgress';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
+import {Tabs, Tab} from 'material-ui/Tabs';
 
 
 class Dataset extends Component {
@@ -84,17 +85,33 @@ class Dataset extends Component {
             ...style,
             width: '60%'
         };
+        const styBottomItem = {
+            ...style,
+            width: '100%',
+        };
         const styFlexContainer = {
             padding: '0',
             margin: '0',
             display: 'flex',
-            justifyContent: 'space-around'
+            justifyContent: 'space-around',
+            flexWrap: 'wrap',
         };
         const buttonStyle = {
             margin: 12,
         };
         const circularProgressStyle = {
             padding: '0em 1em',
+        };
+        const tabPadding = {
+            padding: '1em',
+        };
+        const styles = {
+            headline: {
+                fontSize: 24,
+                paddingTop: 16,
+                marginBottom: 12,
+                fontWeight: 400,
+            },
         };
         const deleteActions = [
             <FlatButton
@@ -145,7 +162,6 @@ class Dataset extends Component {
                                     </IconButton>
                                 </h2>
                         }
-
                         <ul>
                             <li>{this.props.dataset.dataset_type}</li>
                             <li>Triples: {this.props.dataset.triples}</li>
@@ -155,13 +171,27 @@ class Dataset extends Component {
                         <DatasetTask taskId={this.props.dataset.task}/>
                         <RaisedButton label="Delete" style={buttonStyle} onTouchTap={this.handleDeleteDialogOpen} />
                     </Paper>
+                    <Paper style={styBottomItem}>
+                        <Tabs>
+                            <Tab label="Insert triples">
+                                <div style={tabPadding}>
+                                    <GenerateTriples datasetId={this.props.dataset.id}/>
+                                </div>
+                            </Tab>
+                            <Tab label="Train dataset" >
+                              <p>Empty</p>
+                            </Tab>
+                            <Tab label="Dataset services" >
+                              <p>Empty</p>
+                            </Tab>
+                          </Tabs>
+                    </Paper>
                 </div>
-                <GenerateTriples datasetId={this.props.dataset.id}/>
                 <Dialog
-                  actions={deleteActions}
-                  modal={false}
-                  open={this.state.deleteDialogOpen}
-                  onRequestClose={this.handleDeleteDialogClose}
+                    actions={deleteActions}
+                    modal={false}
+                    open={this.state.deleteDialogOpen}
+                    onRequestClose={this.handleDeleteDialogClose}
                 >
                   <p>Do you really want to delete <b>{this.props.dataset.name}</b> dataset?</p>
                 </Dialog>
