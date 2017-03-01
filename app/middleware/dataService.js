@@ -68,9 +68,11 @@ const dataService = store => next => action => {
 
         case types.GET_TASK:
             tasksApi.getTask(action.id).then((response) => {
-                return response.json();
+                if (response.status === 200) {
+                    return response.json();
+                }
             }).then((task) => {
-                return next(taskReceived(task.task.id));
+                return next(taskReceived(task.task));
             });
             break;
 
