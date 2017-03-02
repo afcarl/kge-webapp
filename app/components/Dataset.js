@@ -26,7 +26,7 @@ class Dataset extends Component {
 
     constructor(props) {
         super(props);
-        this.props.reloadDataset(this.props.params.id);
+        this.props.reloadDataset(this.props.params.id, true);
         this.state = {
             editMode: false,
             description: '',
@@ -104,14 +104,6 @@ class Dataset extends Component {
         };
         const tabPadding = {
             padding: '1em',
-        };
-        const styles = {
-            headline: {
-                fontSize: 24,
-                paddingTop: 16,
-                marginBottom: 12,
-                fontWeight: 400,
-            },
         };
         const deleteActions = [
             <FlatButton
@@ -237,8 +229,8 @@ const mapDispatchToProps = (dispatch) => {
         deleteDataset: (id) => {
             dispatch(apiDeleteDataset(id));
         },
-        reloadDataset: (id) => {
-            dispatch(apiGetDataset(id));
+        reloadDataset: (id, cache) => {
+            dispatch(apiGetDataset(id, cache));
         },
         updateDataset: (dataset) => {
             dispatch(apiPutDataset(dataset));

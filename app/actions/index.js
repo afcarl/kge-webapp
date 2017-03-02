@@ -28,11 +28,12 @@ export function apiGetDatasets() {
         type: types.GET_DATASETS,
     };
 }
-export function apiGetDataset(id) {
+export function apiGetDataset(id, cache = true) {
     // Get Only the dataset selected
     return {
         type: types.GET_DATASET,
-        id
+        id,
+        cache
     };
 }
 export function apiPostDatasets(dataset) {

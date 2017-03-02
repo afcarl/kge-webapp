@@ -12,26 +12,61 @@ class DatasetTask extends Component {
         console.log('las props son:', props);
         this.props.reloadTask(props.taskId);
         this.state = {
-            color: '#000',
-            progress: '',
+            color: '#0000aa',
+            progress: undefined,
+            stepsText: undefined,
+            taskState: undefined,
         };
     }
 
-    componentWillReceiveProps() {
-        console.log('Tarea:', this.props);
+    componentWillReceiveProps(nextProps) {
+        // console.log('Calculate new state with next props', this.props, nextProps);
+        const task = nextProps.taskStore;
+        const newState = {};
+        if (nextProps.taskStore !== undefined) {
+            newState.taskState = task.state;
+            switch (task.state) {
+                case 'STARTED':
+                    newState.color = '#ff0';
+                    if (nextProps.taskStore.progress !== undefined) {
+                        newState.progress = nextProps.taskStore.progress.current / nextProps.taskStore.progress.total;
+                        newState.stepsText = nextProps.taskStore.progress.current_steps +  ' of ' + nextProps.taskStore.progress.total_steps;
+                    }
+                    break;
+                case 'SUCCESS':
+                    newState.color = '#0f0';
+                    break;
+                default:
+                    newState.color = '#00f';
+                    break;
+            }
+        }
+        this.setState(newState);
     }
 
     render() {
         const styTask = {
-            color: this.props.color,
+            color: this.state.color,
             textWeight: 800,
         };
 
         return (
             <div>
                 Tasks:<br/>
-            <span style={styTask}>⬤</span>
-                {this.props.taskId} &nbsp; - Progreso: {Math.round(this.props.progress * 1000) / 10}%
+            <span style={styTask}>⬤</span>&nbsp;{this.props.taskId}&nbsp;-&nbsp;
+                {
+                    this.state.progress !== undefined ?
+                        <span>Progress {Math.round(this.state.progress * 1000) / 10}%</span>
+                    :
+                        <span>{this.state.taskState}</span>
+                }
+                &nbsp;
+                {this.state.stepsText ?
+                    <span>(step {this.state.stepsText})</span>
+                    :
+                    <span></span>
+                }
+
             </div>
         );
     }
@@ -40,31 +75,15 @@ DatasetTask.propTypes = {
     taskId: PropTypes.any,
     taskStore: PropTypes.any,
     reloadTask: PropTypes.any,
-    color: PropTypes.any,
-    progress: PropTypes.any,
 };
 
 const mapStateToProps = (state, ownProps) => {
-    console.log('Status:', state.allTasks[ownProps.taskId]);
+    // console.log('MapStateToProps@DatasetTask', state.allTasks[ownProps.taskId]);
     const task = state.allTasks[ownProps.taskId];
-    let color = '#000';
-    let progress = '0';
-    if (task !== undefined) {
-        switch (task.state) {
-            case 'STARTED':
-                color = '#ff0';
-                break;
-            default:
-                color = '#00f';
-                break;
-        }
-        progress = task.progress.current / task.progress.total;
-    }
-    return {
+    const r = {
         taskStore: task,
-        color,
-        progress,
     };
+    return r;
 };
 
 const mapDispatchToProps = (dispatch) => {

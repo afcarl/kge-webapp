@@ -26,7 +26,7 @@ const dataService = store => next => action => {
 
         case types.GET_DATASET:
             // console.log('Get a single Dataset and update on state');
-            api.getDataset(action.id).then((response) => {
+            api.getDataset(action.id, action.cache).then((response) => {
                 return response.json();
             }).then((dataset) => {
                 return next(datasetReceived(dataset.dataset));
