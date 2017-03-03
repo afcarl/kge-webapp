@@ -83,6 +83,16 @@ const dataService = store => next => action => {
             });
             break;
 
+        case types.TRAIN_DATASET:
+            console.log('Train dataset');
+            tasksApi.trainDataset(action.datasetId, action.algorithmId).then((response) => {
+                return response.json();
+            }).then(() => {
+                // Reloads the dataset to get the task view reloaded
+                return store.dispatch(apiGetDataset(action.datasetId));
+            });
+            break;
+
         case types.GET_TASK:
             tasksApi.getTask(action.id).then((response) => {
                 if (response.status === 200) {

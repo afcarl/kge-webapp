@@ -14,6 +14,13 @@ export function showModalAddDataset(text) {
     };
 }
 
+export function showModalAddAlgorithm(state) {
+    return {
+        type: types.SHOW_MODAL_ADD_ALGORITHM,
+        isOpen: state
+    };
+}
+
 export function toggleDrawerBar(text) {
     return {
         type: types.TOGGLE_DRAWER_BAR,
@@ -82,5 +89,12 @@ export function generateTriples(datasetId, graphPattern, maxLevels) {
         datasetId,
         graphPattern,
         maxLevels
+    };
+}
+export function trainDataset(datasetId, algorithmId) {
+    return {
+        type: types.TRAIN_DATASET,
+        datasetId,
+        algorithmId
     };
 }

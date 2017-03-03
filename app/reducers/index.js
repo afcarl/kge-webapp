@@ -56,6 +56,15 @@ function showModalAddDataset(state = types.SHOW_MODAL_ADD_DATASET, action) {
     }
 }
 
+function showModalAddAlgorithm(state = false, action) {
+    switch (action.type) {
+        case types.SHOW_MODAL_ADD_ALGORITHM:
+            return action.isOpen;
+        default:
+            return state;
+    }
+}
+
 function allDatasets(state = [], action) {
     switch (action.type) {
         case types.GET_DATASETS_RECEIVED:
@@ -113,6 +122,7 @@ const rootReducer = combineReducers({
     allTasks,
     allAlgorithms,
     showModalAddDataset,
+    showModalAddAlgorithm,
     datasetOnUpdate,
     routing
 });
