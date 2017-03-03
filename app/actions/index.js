@@ -57,6 +57,19 @@ export function apiDeleteDataset(id) {
         id
     };
 }
+export function apiGetAlgorithm(id) {
+    return {
+        type: types.GET_ALGORITHM,
+        id
+    };
+}
+export function apiPostAlgorithm(algorithm) {
+    return {
+        type: types.POST_ALGORITHM,
+        algorithm
+    };
+}
+
 export function getTask(id) {
     return {
         type: types.GET_TASK,

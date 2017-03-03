@@ -27,3 +27,10 @@ export function datasetDeleteSuccess(id) {
         id
     };
 }
+
+export function algorithmReceived(algorithm) {
+    return {
+        type: types.GET_ALGORITHM_RECEIVED,
+        algorithm
+    };
+}

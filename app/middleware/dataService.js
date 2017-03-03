@@ -1,12 +1,14 @@
-import DatasetApi from '../api';
+import { DatasetApi, AlgorithmApi } from '../api';
 import TasksApi from '../TasksApi';
 import * as types from '../actions/types';
-import { apiGetDataset } from '../actions';
-import { datasetsReceived, datasetReceived, datasetDeleteSuccess, taskReceived } from '../actions/async';
+import { apiGetDataset, apiGetAlgorithm } from '../actions';
+import { datasetsReceived, datasetReceived, datasetDeleteSuccess,
+         taskReceived, algorithmReceived } from '../actions/async';
 
 const dataService = store => next => action => {
     const api = new DatasetApi('http://valdemoro.dia.fi.upm.es:6789');
     const tasksApi = new TasksApi('http://valdemoro.dia.fi.upm.es:6789');
+    const algorithmApi = new AlgorithmApi('http://valdemoro.dia.fi.upm.es:6789');
     /*  Pass all actions through by default */
     next(action);
     // console.log("middleware", action)
@@ -32,12 +34,27 @@ const dataService = store => next => action => {
                 return next(datasetReceived(dataset.dataset));
             });
             break;
+        case types.GET_ALGORITHM:
+            algorithmApi.getAlgorithm(action.id).then((response) => {
+                return response.json();
+            }).then((algorithm) => {
+                return next(algorithmReceived(algorithm));
+            });
+            break;
 
         case types.POST_DATASET:
             api.postDataset(action.dataset.title, action.dataset.description).then((response) => {
                 return response.json();
             }).then((dataset) => {
                 return store.dispatch(apiGetDataset(dataset.dataset.id));
+            });
+            break;
+
+        case types.POST_ALGORITHM:
+            algorithmApi.postAlgorithm(action.algorithm).then((response) => {
+                return response.json();
+            }).then((algorithm) => {
+                return store.dispatch(apiGetAlgorithm(algorithm.algorithm.id));
             });
             break;
 

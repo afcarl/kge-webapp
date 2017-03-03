@@ -19,6 +19,13 @@ function taskToList(initialTaskList, newTaskList) {
     return initialTaskList;
 }
 
+function algorithmToList(initialAlgorithmList, newAlgorithmList) {
+    newAlgorithmList.forEach((algorithm) => {
+        initialAlgorithmList[algorithm.id] = algorithm;
+    });
+    return initialAlgorithmList;
+}
+
 const filter = (state = '', action) => {
     switch (action.type) {
         case types.FILTER:
@@ -72,6 +79,16 @@ function allTasks(state = [], action) {
             return state;
     }
 }
+
+function allAlgorithms(state = [], action) {
+    switch (action.type) {
+        case types.GET_ALGORITHM_RECEIVED:
+            return algorithmToList([...state], [action.algorithm]);
+        default:
+            return state;
+    }
+}
+
 function datasetOnUpdate(state = [], action) {
     const datasetStatus = [...state];
     switch (action.type) {
@@ -94,6 +111,7 @@ const rootReducer = combineReducers({
     drawerNav,
     allDatasets,
     allTasks,
+    allAlgorithms,
     showModalAddDataset,
     datasetOnUpdate,
     routing

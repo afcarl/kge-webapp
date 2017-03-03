@@ -35,14 +35,28 @@ class DatasetApi {
     }
 }
 
-export default DatasetApi;
 
-// class Api {
-//     constructor(base_uri) {
-//         this.base_uri = base_uri;
-//     }
-//
-//     getDataset(datasetId) {
-//         return this.base_uri+"/datasets/"+datasetId+"?use_cache=True"
-//     }
-// }
+class AlgorithmApi {
+    constructor(baseUri) {
+        this.baseUri = baseUri;
+    }
+
+    getAlgorithm(algorithmId) {
+        return fetch(this.baseUri + '/algorithms/' + algorithmId);
+    }
+
+    postAlgorithm(userAlgorithm) {
+        return fetch(this.baseUri + '/algorithms/', {
+            method: 'POST',
+            body: JSON.stringify({
+                algorithm: {
+                    embedding_size: userAlgorithm.embeddingSize,
+                    margin: userAlgorithm.margin,
+                    max_epochs: userAlgorithm.maxEpochs,
+                }
+            })
+        });
+    }
+}
+
+export { DatasetApi, AlgorithmApi };
