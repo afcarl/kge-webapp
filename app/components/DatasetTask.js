@@ -30,7 +30,9 @@ class DatasetTask extends Component {
                     newState.color = '#ff0';
                     if (nextProps.taskStore.progress !== undefined) {
                         newState.progress = nextProps.taskStore.progress.current / nextProps.taskStore.progress.total;
-                        newState.stepsText = nextProps.taskStore.progress.current_steps +  ' of ' + nextProps.taskStore.progress.total_steps;
+                        if(nextProps.taskStore.progress.current_steps !== null || nextProps.taskStore.progress.total_steps !== null) {
+                            newState.stepsText = nextProps.taskStore.progress.current_steps +  ' of ' + nextProps.taskStore.progress.total_steps;
+                        }
                     }
                     break;
                 case 'SUCCESS':
