@@ -3,7 +3,8 @@ import TasksApi from '../TasksApi';
 import * as types from '../actions/types';
 import { apiGetDataset, apiGetAlgorithm } from '../actions';
 import { datasetsReceived, datasetReceived, datasetDeleteSuccess,
-         taskReceived, algorithmReceived } from '../actions/async';
+         taskReceived, algorithmReceived, algorithmsReceived
+       } from '../actions/async';
 
 const dataService = store => next => action => {
     const api = new DatasetApi('http://valdemoro.dia.fi.upm.es:6789');
@@ -39,6 +40,14 @@ const dataService = store => next => action => {
                 return response.json();
             }).then((algorithm) => {
                 return next(algorithmReceived(algorithm));
+            });
+            break;
+
+        case types.GET_ALGORITHMS:
+            algorithmApi.getAlgorithms().then((response) => {
+                return response.json();
+            }).then((algorithms) => {
+                return next(algorithmsReceived(algorithms));
             });
             break;
 

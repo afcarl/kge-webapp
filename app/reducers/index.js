@@ -93,6 +93,8 @@ function allAlgorithms(state = [], action) {
     switch (action.type) {
         case types.GET_ALGORITHM_RECEIVED:
             return algorithmToList([...state], [action.algorithm]);
+        case types.GET_ALGORITHMS_RECEIVED:
+            return algorithmToList([...state], action.algorithms);
         default:
             return state;
     }

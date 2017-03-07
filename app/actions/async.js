@@ -34,3 +34,10 @@ export function algorithmReceived(algorithm) {
         algorithm
     };
 }
+
+export function algorithmsReceived(algorithms) {
+    return {
+        type: types.GET_ALGORITHMS_RECEIVED,
+        algorithms
+    };
+}

@@ -45,6 +45,9 @@ class AlgorithmApi {
         return fetch(this.baseUri + '/algorithms/' + algorithmId);
     }
 
+    getAlgorithms() {
+        return fetch(this.baseUri + '/algorithms');
+    }
     postAlgorithm(userAlgorithm) {
         return fetch(this.baseUri + '/algorithms/', {
             method: 'POST',
