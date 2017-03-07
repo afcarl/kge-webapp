@@ -70,6 +70,11 @@ export function apiGetAlgorithm(id) {
         id
     };
 }
+export function apiGetAlgorithms() {
+    return {
+        type: types.GET_ALGORITHMS
+    };
+}
 export function apiPostAlgorithm(algorithm) {
     return {
         type: types.POST_ALGORITHM,
