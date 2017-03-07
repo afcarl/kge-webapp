@@ -10,7 +10,6 @@ import AddAlgorithmDialog from './AddAlgorithmDialog';
 // Material Ui components
 import RaisedButton from 'material-ui/RaisedButton';
 import SelectField from 'material-ui/SelectField';
-import TextField from 'material-ui/TextField';
 import MenuItem from 'material-ui/MenuItem';
 
 class TrainDataset extends Component {
@@ -25,20 +24,15 @@ class TrainDataset extends Component {
     componentWillMount() {
         this.props.loadAlgorithms();
     }
-    handleAlgorithmIdChange = (event) => {
-        this.setState({
-            algorithmId: event.target.value,
-        });
-    }
+
     onTrainDataset = () => {
         this.props.trainDataset(this.props.datasetId, this.state.algorithm);
     }
     handleChange = (event, index, algorithm) => {
-        console.log(event, index, algorithm);
         this.setState({algorithm});
     }
     _generateAlgorithmText = (algorithm) => {
-        return 'ID: ' + algorithm.id + ' (Embedding: ' + algorithm.embedding_size + ', max epochs: ' + algorithm.max_epochs + ', margin: ' + algorithm.margin;
+        return 'ID: ' + algorithm.id + ' (Embedding: ' + algorithm.embedding_size + ', max epochs: ' + algorithm.max_epochs + ', margin: ' + algorithm.margin + ')';
     }
     render() {
         const buttonStyle = {
@@ -55,9 +49,15 @@ class TrainDataset extends Component {
                         autoWidth={true}
                     >
                     {   /* Print all algorithms on MenuItem components */
-                        this.props.allAlgorithms.map( algorithm =>
-                            <MenuItem value={algorithm.id} primaryText={this._generateAlgorithmText(algorithm)} key={algorithm.id}/>
-                        )
+                        this.props.allAlgorithms.map( algorithm => {
+                            if(algorithm !== undefined) {
+                                return (
+                                <MenuItem value={algorithm.id}
+                                          primaryText={this._generateAlgorithmText(algorithm)}
+                                          key={algorithm.id}/>
+                                  );
+                            }
+                        })
                     }
                     </SelectField>
                     <RaisedButton label="Train Dataset"
