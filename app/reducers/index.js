@@ -36,7 +36,7 @@ const filter = (state = '', action) => {
 };
 
 // react-redux generates this VisibleLayout component
-function drawerNav(state = types.TOGGLE_DRAWER_BAR, action) {
+function drawerNav(state = true, action) {
     switch (action.type) {
         case types.TOGGLE_DRAWER_BAR:
             return !state;
@@ -45,7 +45,7 @@ function drawerNav(state = types.TOGGLE_DRAWER_BAR, action) {
     }
 }
 
-function showModalAddDataset(state = types.SHOW_MODAL_ADD_DATASET, action) {
+function showModalAddDataset(state = false, action) {
     // console.log("MODALDATASET!!!")
     // console.log(action, state)
     switch (action.type) {

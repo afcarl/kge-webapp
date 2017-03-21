@@ -5,6 +5,7 @@ import { browserHistory } from 'react-router';
 // Local components
 import GenerateTriples from './GenerateTriples';
 import TrainDataset from './TrainDataset';
+import ServicesDataset from './ServicesDataset';
 import DatasetTask from './DatasetTask';
 
 // Actions
@@ -177,7 +178,9 @@ class Dataset extends Component {
                                 </div>
                             </Tab>
                             <Tab label="Dataset services" >
-                              <p>Empty</p>
+                                <div style={tabPadding}>
+                                    <ServicesDataset datasetId={this.props.dataset.id}/>
+                                </div>
                             </Tab>
                           </Tabs>
                     </Paper>

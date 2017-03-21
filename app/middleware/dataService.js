@@ -85,7 +85,11 @@ const dataService = store => next => action => {
 
         case types.GENERATE_TRIPLES:
             tasksApi.generateTriples(action.datasetId, action.graphPattern, action.maxLevels).then((response) => {
-                return response.json();
+                if(response.status === 202) {
+                    return response.json();
+                } else {
+                    console.log(response);
+                }
             }).then(() => {
                 // Maybe is better to do an GET_TASK action
                 return store.dispatch(apiGetDataset(action.datasetId));
