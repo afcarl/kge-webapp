@@ -62,4 +62,19 @@ class AlgorithmApi {
     }
 }
 
-export { DatasetApi, AlgorithmApi };
+class ServicesApi {
+    constructor(baseUri) {
+        this.baseUri = baseUri;
+    }
+
+    getSuggestions(datasetId, text) {
+        return fetch(this.baseUri + '/datasets/' + datasetId + '/suggest_name', {
+            method: 'POST',
+            body: JSON.stringify({
+                input: text
+            })
+        });
+    }
+}
+
+export { DatasetApi, AlgorithmApi, ServicesApi };
