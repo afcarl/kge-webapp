@@ -13,6 +13,12 @@ export function taskReceived(task) {
         task
     };
 }
+export function taskErrorReceived(response) {
+    return {
+        type: types.GET_TASK_ERROR,
+        response
+    };
+}
 
 export function datasetReceived(dataset) {
     return {

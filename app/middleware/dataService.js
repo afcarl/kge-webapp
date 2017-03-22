@@ -3,7 +3,8 @@ import TasksApi from '../TasksApi';
 import * as types from '../actions/types';
 import { apiGetDataset, apiGetAlgorithm } from '../actions';
 import { datasetsReceived, datasetReceived, datasetDeleteSuccess,
-         taskReceived, algorithmReceived, algorithmsReceived,
+         taskReceived, taskErrorReceived,
+         algorithmReceived, algorithmsReceived,
          suggestionsReceived
        } from '../actions/async';
 
@@ -113,9 +114,14 @@ const dataService = store => next => action => {
             tasksApi.getTask(action.id).then((response) => {
                 if (response.status === 200) {
                     return response.json();
+                } else {
+                    throw response.json();
                 }
             }).then((task) => {
                 return next(taskReceived(task.task));
+            }, (error) => {
+                console.log(error);
+                return next(taskErrorReceived(error));
             });
             break;
 
