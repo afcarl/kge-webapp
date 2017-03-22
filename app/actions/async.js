@@ -41,3 +41,11 @@ export function algorithmsReceived(algorithms) {
         algorithms
     };
 }
+
+export function suggestionsReceived(datasetId, suggestions) {
+    return {
+        type: types.GET_SUGGESTIONS_RECEIVED,
+        datasetId,
+        suggestions
+    };
+}

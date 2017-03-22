@@ -1,15 +1,18 @@
-import { DatasetApi, AlgorithmApi } from '../api';
+import { DatasetApi, AlgorithmApi, ServicesApi } from '../api';
 import TasksApi from '../TasksApi';
 import * as types from '../actions/types';
 import { apiGetDataset, apiGetAlgorithm } from '../actions';
 import { datasetsReceived, datasetReceived, datasetDeleteSuccess,
-         taskReceived, algorithmReceived, algorithmsReceived
+         taskReceived, algorithmReceived, algorithmsReceived,
+         suggestionsReceived
        } from '../actions/async';
 
 const dataService = store => next => action => {
     const api = new DatasetApi('http://valdemoro.dia.fi.upm.es:6789');
     const tasksApi = new TasksApi('http://valdemoro.dia.fi.upm.es:6789');
+    const servicesApi = new ServicesApi('http://valdemoro.dia.fi.upm.es:6789');
     const algorithmApi = new AlgorithmApi('http://valdemoro.dia.fi.upm.es:6789');
+
     /*  Pass all actions through by default */
     next(action);
     // console.log("middleware", action)
@@ -113,6 +116,19 @@ const dataService = store => next => action => {
                 }
             }).then((task) => {
                 return next(taskReceived(task.task));
+            });
+            break;
+
+        case types.GET_SUGGESTIONS:
+            servicesApi.getSuggestions(action.datasetId, action.text).then((response) => {
+                return response.json();
+            }).then((suggestions) => {
+                const suggests = [];
+                suggestions.forEach((suggestion) => {
+                    console.log(suggestion.text);
+                    suggests.push(suggestion.text);
+                });
+                return next(suggestionsReceived(action.datasetId, suggests));
             });
             break;
 

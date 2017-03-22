@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { ServicesApi } from '../api';
 
 // Actions
-import {  } from '../actions';
+import { getSuggestions } from '../actions';
 
 // Custom components
 
@@ -17,62 +17,59 @@ class ServicesDataset extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            autocompletions: [],
+            dataSource: [],
         };
         this.api = new ServicesApi('http://valdemoro.dia.fi.upm.es:6789');
     }
     componentWillMount() {
     }
 
-    handleUpdateInput = (value) => {
-        const suggestions = this.api.getSuggestions(this.props.datasetId, value).then((response) => {
-            return response.json();
-        }).then((response) => {
-            console.log(response);
-            const suggests = [];
-            response.forEach((suggestion) => {
-                console.log(suggestion.text);
-                suggests.push(suggestion.text);
-            });
-            return suggests;
-        });
-        // TODO: SetState does not work properly because promise haven't been resolved when it is executed
-        console.log("suggestions are:", suggestions);
+    componentWillReceiveProps(nextProps) {
+        // Update the state with suggestion received
         this.setState({
-            autocompletions: suggestions,
+            dataSource: [...nextProps.suggestion],
         });
     }
 
+    handleUpdateInput = (value) => {
+        // Call to suggestion API
+        this.props.getSuggestion(this.props.datasetId, value);
+    }
+    suggestionFilter = (searchText, key) => {
+        // Filter only when searchText is empty
+        return searchText !== '';
+    }
     render() {
         return (
             <div>
                 <p>Find similar entities</p>
                 <AutoComplete
                     hintText="Type anything"
-                    dataSource={this.state.autocompletions}
+                    dataSource={this.state.dataSource}
                     onUpdateInput={this.handleUpdateInput}
+                    filter={this.suggestionFilter}
                 />
-            <p>abcd</p> <br/>
-            <p>abcd</p> <br/>
-            <p>abcd</p> <br/>
-            <p>abcd</p> <br/>
             </div>
         );
     }
 }
 
 ServicesDataset.propTypes = {
-    datasetId: PropTypes.any,
+    datasetId: PropTypes.number,
+    suggestion: PropTypes.array,
+    getSuggestion: PropTypes.func,
 };
 ServicesDataset.displayName = 'ServicesDataset';
 
 const mapStateToProps = (state) => {
     return {
+        suggestion: state.suggestion,
     };
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
+        getSuggestion: (datasetId, text) => dispatch(getSuggestions(datasetId, text))
     };
 };
 

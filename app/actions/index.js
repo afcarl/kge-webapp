@@ -103,3 +103,11 @@ export function trainDataset(datasetId, algorithmId) {
         algorithmId
     };
 }
+
+export function getSuggestions(datasetId, text) {
+    return {
+        type: types.GET_SUGGESTIONS,
+        datasetId,
+        text
+    };
+}

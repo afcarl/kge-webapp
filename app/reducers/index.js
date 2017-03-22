@@ -117,6 +117,15 @@ function datasetOnUpdate(state = [], action) {
     }
 }
 
+function suggestion(state = [], action) {
+    if(action.type === types.GET_SUGGESTIONS_RECEIVED) {
+        return action.suggestions;
+    } else {
+        return state;
+    }
+
+}
+
 const rootReducer = combineReducers({
     filter,
     drawerNav,
@@ -126,6 +135,7 @@ const rootReducer = combineReducers({
     showModalAddDataset,
     showModalAddAlgorithm,
     datasetOnUpdate,
+    suggestion,
     routing
 });
 
