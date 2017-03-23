@@ -131,8 +131,7 @@ const dataService = store => next => action => {
             }).then((suggestions) => {
                 const suggests = [];
                 suggestions.forEach((suggestion) => {
-                    console.log(suggestion.text);
-                    suggests.push(suggestion.text);
+                    suggests.push(suggestion);
                 });
                 return next(suggestionsReceived(action.datasetId, suggests));
             });
