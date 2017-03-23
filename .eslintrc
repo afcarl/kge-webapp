@@ -74,7 +74,7 @@
     "consistent-return": 0,          // http://eslint.org/docs/rules/consistent-return
     "curly": [2, "multi-line"],      // http://eslint.org/docs/rules/curly
     "default-case": 2,               // http://eslint.org/docs/rules/default-case
-    "dot-notation": [2, {            // http://eslint.org/docs/rules/dot-notation
+    "dot-notation": [1, {            // http://eslint.org/docs/rules/dot-notation
       "allowKeywords": true
     }],
     "eqeqeq": 1,                     // http://eslint.org/docs/rules/eqeqeq
