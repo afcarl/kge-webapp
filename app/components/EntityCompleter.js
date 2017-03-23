@@ -1,8 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 
-import { ServicesApi } from '../api';
-
 // Actions
 import { getSuggestions } from '../actions';
 
@@ -20,7 +18,6 @@ class EntityCompleter extends Component {
         this.state = {
             dataSource: [],
         };
-        this.api = new ServicesApi('http://valdemoro.dia.fi.upm.es:6789');
     }
     componentWillMount() {
     }
@@ -53,14 +50,23 @@ class EntityCompleter extends Component {
         // Filter only when searchText is empty
         return searchText !== '';
     }
+    userChoose = (entity, id) => {
+        const selectedEntity = this.props.fullSuggestion.filter((ent) => {
+            return ent.entity.entity === entity.valueKey;
+        })[0];
+        console.log('found entity is:', selectedEntity);
+        this.props.onUserChoose(entity, selectedEntity.entity, id);
+    }
+
     render() {
         return (
             <AutoComplete
-                hintText="Type anything"
+                hintText="Choose an entity"
                 dataSource={this.state.dataSource}
                 onUpdateInput={this.handleUpdateInput}
                 filter={this.suggestionFilter}
-                onNewRequest={this.props.onUserChoose}
+                onNewRequest={this.userChoose}
+                fullWidth={true}
             />
         );
     }

@@ -6,29 +6,62 @@ import { getSuggestions } from '../actions';
 
 // Custom components
 import EntityCompleter from './EntityCompleter';
+import EntityCard from './EntityCard';
 
 // Material Ui components
+import RaisedButton from 'material-ui/RaisedButton';
 
 class ServicesDataset extends Component {
 
     constructor(props) {
         super(props);
+        this.state = {
+            entity: undefined,
+            objectEntity: undefined,
+        };
     }
     componentWillMount() {
     }
 
-    readEntity = (entity, index) => {
-        console.log('Received ', entity);
+    readEntity = (entity, objectEntity, index) => {
+        console.log('Received ', entity, objectEntity, index);
+        this.setState({
+            entity: entity.valueKey,
+            objectEntity,
+        });
+    }
+    onFindDataset = () => {
+        // Check if Entity completer has been selected
+        console.log('is initialized:', this.state.entity);
     }
     render() {
+        const buttonStyle = {
+            margin: 12,
+        };
         return (
-            <div>
-                <p>Choose an entity</p>
-                <EntityCompleter
-                    datasetId={this.props.datasetId}
-                    onUserChoose={this.readEntity}
+            <div style={{
+                display: 'flex',
+                flexWrap: 'wrap',
+            }}>
+                <div style={{
+                    flexBasis: '50%',
+                }}>
+                    <p>Select an entity and find similar ones</p>
+                    <EntityCompleter
+                        datasetId={this.props.datasetId}
+                        onUserChoose={this.readEntity}
+                        />
+                    <p>&nbsp;</p><br/>
+                    <RaisedButton label="Find similar entities"
+                                  style={buttonStyle}
+                                  onTouchTap={this.onFindDataset}
                     />
-                <p>&nbsp;</p><br/>
+                </div>
+                <div style={{
+                    flexBasis: '50%',
+                }}>
+                    <EntityCard datasetObject={this.state.objectEntity}/>
+                </div>
             </div>
         );
     }
