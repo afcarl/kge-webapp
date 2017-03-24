@@ -25,7 +25,8 @@ class EntityCard extends Component {
         console.log('cwrp-ec', nextProps.datasetObject);
         if(nextProps.datasetObject !== undefined) {
             this.setState({
-                id: nextProps.datasetObject.entity,
+                // TODO: Select language with a state.settings
+                id: nextProps.datasetObject.entity_id,
                 label: nextProps.datasetObject.label['en'],
                 description: nextProps.datasetObject.description['en'],
             });
@@ -34,10 +35,7 @@ class EntityCard extends Component {
 
     render() {
         const style = {
-            // height: 100,
-            // width: 100,
             margin: '1em',
-            // textAlign: 'center',
             display: 'flex',
             flexWrap: 'wrap',
         };

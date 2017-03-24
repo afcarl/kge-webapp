@@ -2,7 +2,7 @@ import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 
 // Actions
-import { getSuggestions } from '../actions';
+import { getSuggestions, getSimilarEntities } from '../actions';
 
 // Custom components
 import EntityCompleter from './EntityCompleter';
@@ -33,6 +33,7 @@ class ServicesDataset extends Component {
     onFindDataset = () => {
         // Check if Entity completer has been selected
         console.log('is initialized:', this.state.entity);
+        this.props.getSimilarEntities(this.props.datasetId, this.state.entity);
     }
     render() {
         const buttonStyle = {
@@ -62,25 +63,38 @@ class ServicesDataset extends Component {
                 }}>
                     <EntityCard datasetObject={this.state.objectEntity}/>
                 </div>
+                <div style={{
+                    flexBasis: '100%'
+                }}>
+                    {
+                        this.props.allEntities.map(entity =>
+                             <EntityCard { ...entity } key={ entity.id }/>
+                        )
+                    }
+                </div>
             </div>
         );
     }
 }
 
 ServicesDataset.propTypes = {
-    datasetId: PropTypes.number
+    datasetId: PropTypes.number,
+    getSimilarEntities: PropTypes.func,
+    getSuggestion: PropTypes.func,
 };
 ServicesDataset.displayName = 'ServicesDataset';
 
 const mapStateToProps = (state) => {
     return {
         fullSuggestion: state.suggestion,
+        allEntities: [],
     };
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        getSuggestion: (datasetId, text) => dispatch(getSuggestions(datasetId, text))
+        getSuggestion: (datasetId, text) => dispatch(getSuggestions(datasetId, text)),
+        getSimilarEntities: (datasetId, entity) => dispatch(getSimilarEntities(datasetId, entity)),
     };
 };
 

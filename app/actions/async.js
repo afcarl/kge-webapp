@@ -55,3 +55,13 @@ export function suggestionsReceived(datasetId, suggestions) {
         suggestions
     };
 }
+
+export function similarEntitiesReceived(datasetId, entity, similarEntities) {
+    return {
+        type: types.GET_SIMILARENTITIES_RECEIVED,
+        datasetId,
+        entity,
+        similarEntities,
+    };
+
+}

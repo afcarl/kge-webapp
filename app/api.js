@@ -75,6 +75,18 @@ class ServicesApi {
             })
         });
     }
+
+    getSimilarEntities(datasetId, selectedEntity) {
+        return fetch(this.baseUri + '/datasets/' + datasetId + '/similar_entities', {
+            method: 'POST',
+            body: JSON.stringify({
+                entity: {
+                    value: selectedEntity,
+                    type: 'uri',
+                }
+            })
+        });
+    }
 }
 
 export { DatasetApi, AlgorithmApi, ServicesApi };

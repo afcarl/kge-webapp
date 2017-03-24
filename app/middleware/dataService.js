@@ -5,7 +5,7 @@ import { apiGetDataset, apiGetAlgorithm } from '../actions';
 import { datasetsReceived, datasetReceived, datasetDeleteSuccess,
          taskReceived, taskErrorReceived,
          algorithmReceived, algorithmsReceived,
-         suggestionsReceived
+         suggestionsReceived, similarEntitiesReceived,
        } from '../actions/async';
 
 const dataService = store => next => action => {
@@ -134,6 +134,18 @@ const dataService = store => next => action => {
                     suggests.push(suggestion);
                 });
                 return next(suggestionsReceived(action.datasetId, suggests));
+            });
+            break;
+
+        case types.GET_SIMILARENTITIES:
+            servicesApi.getSimilarEntities(action.datasetId, action.entity).then((response) => {
+                return response.json();
+            }).then((similarEntities) => {
+                const simEntities = [];
+                similarEntities.similar_entities.response.forEach((simEnt) => {
+                    simEntities.push(simEnt.entity);
+                });
+                return next(similarEntitiesReceived(action.datasetId, action.entity, simEntities));
             });
             break;
 

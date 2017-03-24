@@ -111,3 +111,11 @@ export function getSuggestions(datasetId, text) {
         text
     };
 }
+
+export function getSimilarEntities(datasetId, entity) {
+    return {
+        type: types.GET_SIMILARENTITIES,
+        datasetId,
+        entity,
+    };
+}

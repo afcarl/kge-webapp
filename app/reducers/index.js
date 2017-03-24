@@ -123,6 +123,14 @@ function suggestion(state = [], action) {
     } else {
         return state;
     }
+}
+
+function similarEntities(state = [], action) {
+    if(action.type === types.GET_SIMILARENTITIES_RECEIVED) {
+        return action.similarEntities;
+    } else {
+        return state;
+    }
 
 }
 
@@ -136,7 +144,8 @@ const rootReducer = combineReducers({
     showModalAddAlgorithm,
     datasetOnUpdate,
     suggestion,
-    routing
+    routing,
+    similarEntities,
 });
 
 export default rootReducer;
