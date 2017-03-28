@@ -21,15 +21,11 @@ class EntityCard extends Component {
 
     componentWillReceiveProps(nextProps) {
         // Treat input props with appropiate language
-        console.log('cwrp-ec', nextProps.datasetObject);
-        if(nextProps.datasetObject !== undefined) {
-            this.setState({
-                // TODO: Select language with a state.settings
-                id: this._getEntity(nextProps.datasetObject),
-                label: this._getLabel(nextProps.datasetObject),
-                description: this._getDescription(nextProps.datasetObject),
-            });
-        }
+        this.setState({
+            id: this._getEntity(nextProps.datasetObject),
+            label: this._getLabel(nextProps.datasetObject),
+            description: this._getDescription(nextProps.datasetObject),
+        });
     }
 
     _getEntity = (datasetObject) => {
@@ -41,6 +37,7 @@ class EntityCard extends Component {
 
     _getLabel = (datasetObject) => {
         if(datasetObject !== undefined) {
+            // TODO: Select language with a state.settings
             return datasetObject.label['en'];
         }
         else return undefined;
@@ -48,6 +45,7 @@ class EntityCard extends Component {
 
     _getDescription = (datasetObject) => {
         if(datasetObject !== undefined) {
+            // TODO: Select language with a state.settings
             return datasetObject.description['en'];
         }
         else return undefined;
@@ -58,6 +56,7 @@ class EntityCard extends Component {
             margin: '1em',
             display: 'flex',
             flexWrap: 'wrap',
+            ...this.props.style,
         };
         return (
             <Paper style={style} zDepth={2}>

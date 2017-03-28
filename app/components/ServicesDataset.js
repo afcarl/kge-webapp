@@ -63,11 +63,17 @@ class ServicesDataset extends Component {
                     <EntityCard datasetObject={this.state.objectEntity}/>
                 </div>
                 <div style={{
-                    flexBasis: '100%'
+                    flexBasis: '100%',
+                    display: 'flex',
+                    flexWrap: 'wrap'
                 }}>
                     {
-                        this.props.allEntities.map(entity =>
-                             <EntityCard datasetObject={entity} key={ entity.entity_id }/>
+                        this.props.allEntities.map((entity, index) =>
+                             <EntityCard datasetObject={entity}
+                                         key={ index }
+                                         style={{
+                                             flexBasis: '46.4%'
+                                         }}/>
                         )
                     }
                 </div>
@@ -86,7 +92,8 @@ ServicesDataset.displayName = 'ServicesDataset';
 const mapStateToProps = (state) => {
     return {
         fullSuggestion: state.suggestion,
-        allEntities: state.similarEntities,
+        // Remove first element (is equal to the requested)
+        allEntities: state.similarEntities.filter((element, index) => index > 0),
     };
 };
 
