@@ -77,11 +77,12 @@ class ServicesApi {
     }
 
     getSimilarEntities(datasetId, selectedEntity) {
-        return fetch(this.baseUri + '/datasets/' + datasetId + '/similar_entities', {
+        console.log('API sobre: ', selectedEntity.entity_uri);
+        return fetch(this.baseUri + '/datasets/' + datasetId + '/similar_entities?object=True', {
             method: 'POST',
             body: JSON.stringify({
                 entity: {
-                    value: selectedEntity,
+                    value: selectedEntity.entity_uri,
                     type: 'uri',
                 }
             })

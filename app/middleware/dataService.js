@@ -143,7 +143,7 @@ const dataService = store => next => action => {
             }).then((similarEntities) => {
                 const simEntities = [];
                 similarEntities.similar_entities.response.forEach((simEnt) => {
-                    simEntities.push(simEnt.entity);
+                    simEntities.push(simEnt.object);
                 });
                 return next(similarEntitiesReceived(action.datasetId, action.entity, simEntities));
             });

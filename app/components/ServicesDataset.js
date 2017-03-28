@@ -31,9 +31,8 @@ class ServicesDataset extends Component {
         });
     }
     onFindDataset = () => {
-        // Check if Entity completer has been selected
-        console.log('is initialized:', this.state.entity);
-        this.props.getSimilarEntities(this.props.datasetId, this.state.entity);
+        // TODO: Check if Entity completer has been selected
+        this.props.getSimilarEntities(this.props.datasetId, this.state.objectEntity);
     }
     render() {
         const buttonStyle = {
@@ -68,7 +67,7 @@ class ServicesDataset extends Component {
                 }}>
                     {
                         this.props.allEntities.map(entity =>
-                             <EntityCard { ...entity } key={ entity.id }/>
+                             <EntityCard datasetObject={entity} key={ entity.entity_id }/>
                         )
                     }
                 </div>
@@ -87,7 +86,7 @@ ServicesDataset.displayName = 'ServicesDataset';
 const mapStateToProps = (state) => {
     return {
         fullSuggestion: state.suggestion,
-        allEntities: [],
+        allEntities: state.similarEntities,
     };
 };
 
