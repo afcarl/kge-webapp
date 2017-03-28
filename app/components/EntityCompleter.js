@@ -32,7 +32,7 @@ class EntityCompleter extends Component {
                 value: (
                     <MenuItem
                         primaryText={suggestion.text}
-                        secondaryText={suggestion.entity.entity}
+                        secondaryText={suggestion.entity.entity_id}
                     />
                 ),
             });

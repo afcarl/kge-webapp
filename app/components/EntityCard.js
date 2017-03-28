@@ -13,11 +13,10 @@ class EntityCard extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            id: undefined,
-            label: undefined,
-            description: undefined,
+            id: this._getEntity(props.datasetObject),
+            label: this._getLabel(props.datasetObject),
+            description: this._getDescription(props.datasetObject),
         };
-
     }
 
     componentWillReceiveProps(nextProps) {
@@ -26,11 +25,32 @@ class EntityCard extends Component {
         if(nextProps.datasetObject !== undefined) {
             this.setState({
                 // TODO: Select language with a state.settings
-                id: nextProps.datasetObject.entity_id,
-                label: nextProps.datasetObject.label['en'],
-                description: nextProps.datasetObject.description['en'],
+                id: this._getEntity(nextProps.datasetObject),
+                label: this._getLabel(nextProps.datasetObject),
+                description: this._getDescription(nextProps.datasetObject),
             });
         }
+    }
+
+    _getEntity = (datasetObject) => {
+        if(datasetObject !== undefined) {
+            return datasetObject.entity_id;
+        }
+        else return undefined;
+    }
+
+    _getLabel = (datasetObject) => {
+        if(datasetObject !== undefined) {
+            return datasetObject.label['en'];
+        }
+        else return undefined;
+    }
+
+    _getDescription = (datasetObject) => {
+        if(datasetObject !== undefined) {
+            return datasetObject.description['en'];
+        }
+        else return undefined;
     }
 
     render() {
