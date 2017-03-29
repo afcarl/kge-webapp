@@ -86,6 +86,7 @@ ServicesDataset.propTypes = {
     datasetId: PropTypes.number,
     getSimilarEntities: PropTypes.func,
     getSuggestion: PropTypes.func,
+    allEntities: PropTypes.array,
 };
 ServicesDataset.displayName = 'ServicesDataset';
 

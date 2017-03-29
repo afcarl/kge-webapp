@@ -46,7 +46,7 @@ class EntityCompleter extends Component {
         // Call to suggestion API
         this.props.getSuggestion(this.props.datasetId, value);
     }
-    suggestionFilter = (searchText, key) => {
+    suggestionFilter = (searchText) => {
         // Filter only when searchText is empty
         return searchText !== '';
     }

@@ -1,5 +1,4 @@
 import React, { PropTypes, Component } from 'react';
-import { connect } from 'react-redux';
 
 // Actions
 
@@ -31,24 +30,27 @@ class EntityCard extends Component {
     _getEntity = (datasetObject) => {
         if(datasetObject !== undefined) {
             return datasetObject.entity_id;
+        } else {
+            return undefined;
         }
-        else return undefined;
     }
 
     _getLabel = (datasetObject) => {
         if(datasetObject !== undefined) {
             // TODO: Select language with a state.settings
             return datasetObject.label['en'];
+        } else {
+            return undefined;
         }
-        else return undefined;
     }
 
     _getDescription = (datasetObject) => {
         if(datasetObject !== undefined) {
             // TODO: Select language with a state.settings
             return datasetObject.description['en'];
+        } else {
+            return undefined;
         }
-        else return undefined;
     }
 
     render() {
@@ -102,6 +104,7 @@ class EntityCard extends Component {
 EntityCard.propTypes = {
     // External
     datasetObject: PropTypes.any,
+    style: PropTypes.object,
 };
 EntityCard.displayName = 'EntityCard';
 
