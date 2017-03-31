@@ -2,6 +2,11 @@ import { routerReducer as routing } from 'react-router-redux';
 import { combineReducers } from 'redux';
 import * as types from '../actions/types';
 
+const defaultConfig = {
+    apiRoute: 'http://valdemoro.dia.fi.upm.es:6789',
+    defaultLang: 'en',
+};
+
 function datasetToList(initialDatasetList, newDatasetList) {
     // console.log('tolist', newDatasetList, initialDatasetList);
     newDatasetList.forEach((dataset) => {
@@ -134,6 +139,21 @@ function similarEntities(state = [], action) {
 
 }
 
+function config(state = defaultConfig, action) {
+    const newState = {...state};
+
+    switch (action.type) {
+        case types.SET_APIROUTE:
+            newState.apiRoute = action.apiRoute;
+            return newState;
+        case types.SET_DEFAULTLANG:
+            newState.defaultLang = action.defaultLang;
+            return newState;
+        default:
+            return state;
+    }
+}
+
 const rootReducer = combineReducers({
     filter,
     drawerNav,
@@ -146,6 +166,7 @@ const rootReducer = combineReducers({
     suggestion,
     routing,
     similarEntities,
+    config,
 });
 
 export default rootReducer;

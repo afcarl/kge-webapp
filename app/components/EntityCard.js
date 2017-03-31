@@ -1,4 +1,5 @@
 import React, { PropTypes, Component } from 'react';
+import { connect } from 'react-redux';
 
 // Actions
 
@@ -38,7 +39,7 @@ class EntityCard extends Component {
     _getLabel = (datasetObject) => {
         if(datasetObject !== undefined) {
             // TODO: Select language with a state.settings
-            return datasetObject.label['en'];
+            return datasetObject.label[this.props.defaultLang];
         } else {
             return undefined;
         }
@@ -47,7 +48,7 @@ class EntityCard extends Component {
     _getDescription = (datasetObject) => {
         if(datasetObject !== undefined) {
             // TODO: Select language with a state.settings
-            return datasetObject.description['en'];
+            return datasetObject.description[this.props.defaultLang];
         } else {
             return undefined;
         }
@@ -105,7 +106,16 @@ EntityCard.propTypes = {
     // External
     datasetObject: PropTypes.any,
     style: PropTypes.object,
+    defaultLang: PropTypes.string,
 };
 EntityCard.displayName = 'EntityCard';
 
-export default EntityCard;
+const mapStateToProps = (state) => {
+    return {
+        defaultLang: state.config.defaultLang,
+    };
+};
+
+export default connect(
+  mapStateToProps,
+)(EntityCard);

@@ -9,10 +9,11 @@ import { datasetsReceived, datasetReceived, datasetDeleteSuccess,
        } from '../actions/async';
 
 const dataService = store => next => action => {
-    const api = new DatasetApi('http://valdemoro.dia.fi.upm.es:6789');
-    const tasksApi = new TasksApi('http://valdemoro.dia.fi.upm.es:6789');
-    const servicesApi = new ServicesApi('http://valdemoro.dia.fi.upm.es:6789');
-    const algorithmApi = new AlgorithmApi('http://valdemoro.dia.fi.upm.es:6789');
+    const apiRoute = store.getState().config.apiRoute;
+    const api = new DatasetApi(apiRoute);
+    const tasksApi = new TasksApi(apiRoute);
+    const servicesApi = new ServicesApi(apiRoute);
+    const algorithmApi = new AlgorithmApi(apiRoute);
 
     /*  Pass all actions through by default */
     next(action);
@@ -101,7 +102,6 @@ const dataService = store => next => action => {
             break;
 
         case types.TRAIN_DATASET:
-            console.log('Train dataset');
             tasksApi.trainDataset(action.datasetId, action.algorithmId).then((response) => {
                 return response.json();
             }).then(() => {
