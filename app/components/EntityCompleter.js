@@ -28,7 +28,7 @@ class EntityCompleter extends Component {
         nextProps.fullSuggestion.forEach((suggestion) => {
             allSuggestions.push({
                 text: suggestion.text,
-                valueKey: suggestion.entity.entity,
+                valueKey: suggestion.entity.entity_id,
                 value: (
                     <MenuItem
                         primaryText={suggestion.text}
@@ -52,7 +52,7 @@ class EntityCompleter extends Component {
     }
     userChoose = (entity, id) => {
         const selectedEntity = this.props.fullSuggestion.filter((ent) => {
-            return ent.entity.entity === entity.valueKey;
+            return ent.entity.entity_id === entity.valueKey;
         })[0];
         console.log('found entity is:', selectedEntity);
         this.props.onUserChoose(entity, selectedEntity.entity, id);
