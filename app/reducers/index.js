@@ -3,7 +3,7 @@ import { combineReducers } from 'redux';
 import * as types from '../actions/types';
 
 const defaultConfig = {
-    apiRoute: 'http://valdemoro.dia.fi.upm.es:6789',
+    apiRoute: 'http://localhost:6789',
     defaultLang: 'en',
 };
 
@@ -41,7 +41,7 @@ const filter = (state = '', action) => {
 };
 
 // react-redux generates this VisibleLayout component
-function drawerNav(state = true, action) {
+function drawerNav(state = false, action) {
     switch (action.type) {
         case types.TOGGLE_DRAWER_BAR:
             return !state;

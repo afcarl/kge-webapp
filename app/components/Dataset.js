@@ -22,10 +22,18 @@ import CircularProgress from 'material-ui/CircularProgress';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import {Tabs, Tab} from 'material-ui/Tabs';
+import Divider from 'material-ui/Divider';
 
+import createPlotlyComponent from 'react-plotlyjs';
+import Plotly from 'plotly.js/dist/plotly-cartesian';
+const PlotlyComponent = createPlotlyComponent(Plotly);
+
+const RUNNING_TASK_MASK = 0b0001;
+const TRAINED_MASK = 0b0010;
+const INDEXED_MASK = 0b0100;
+const SEARCHINDEXED_MASK = 0b1000;
 
 class Dataset extends Component {
-
     constructor(props) {
         super(props);
         this.props.reloadDataset(this.props.params.id, true);
@@ -72,6 +80,18 @@ class Dataset extends Component {
         this.handleDeleteDialogClose();
         this.onDeleteDataset();
     }
+    isTrained = (status = this.props.dataset.status) => {
+        return (status & TRAINED_MASK) !== 0;
+    }
+    isIndexed = (status = this.props.dataset.status) => {
+        return (status & INDEXED_MASK) !== 0;
+    }
+    isSearchIndexed = (status = this.props.dataset.status) => {
+        return (status & SEARCHINDEXED_MASK) !== 0;
+    }
+    isRunningTask = (status = this.props.dataset.status) => {
+        return (status & RUNNING_TASK_MASK) !== 0;
+    }
 
     render() {
         const style = {
@@ -81,11 +101,11 @@ class Dataset extends Component {
 
         const styRightItem = {
             ...style,
-            width: '30%'
+            width: '55%'
         };
         const styLeftItem = {
             ...style,
-            width: '60%'
+            width: '40%'
         };
         const styBottomItem = {
             ...style,
@@ -109,7 +129,7 @@ class Dataset extends Component {
         };
         const deleteActions = [
             <FlatButton
-                label="Cancel"
+                label="CancVel"
                 primary={true}
                 onTouchTap={this.handleDeleteDialogClose}
             />,
@@ -119,13 +139,51 @@ class Dataset extends Component {
                 onTouchTap={this.handleDeleteDialogDelete}
             />,
         ];
+
+        const data = [
+            {
+                type: 'scatter',  // all "scatter" attributes: https://plot.ly/javascript/reference/#scatter
+                x: [1, 2, 3],     // more about "x": #scatter-x
+                y: [6, 2, 3],     // #scatter-y
+                marker: {         // marker is an object, valid marker keys: #scatter-marker
+                    color: 'rgb(16, 32, 77)' // more about "marker.color": #scatter-marker-color
+                }
+            },
+            {
+                type: 'bar',      // all "bar" chart attributes: #bar
+                x: [1, 2, 3],     // more about "x": #bar-x
+                y: [6, 2, 3],     // #bar-y
+                name: 'bar chart example' // #bar-name
+            }
+        ];
+        const layout = {                     // all "layout" attributes: #layout
+            title: 'simple example',  // more about "layout.title": #layout-title
+            xaxis: {                  // all "layout.xaxis" attributes: #layout-xaxis
+                title: 'time'         // more about "layout.xaxis.title": #layout-xaxis-title
+            },
+            annotations: [            // all "annotation" attributes: #layout-annotations
+                {
+                    text: 'simple annotation',    // #layout-annotations-text
+                    x: 0,                         // #layout-annotations-x
+                    xref: 'paper',                // #layout-annotations-xref
+                    y: 0,                         // #layout-annotations-y
+                    yref: 'paper'                 // #layout-annotations-yref
+                }
+            ]
+        };
+        const config = {
+            showLink: false,
+            displayModeBar: true
+        };
+
+
         if(this.props.dataset !== [] && this.props.dataset !== undefined) {
             return (
             <div>
                 <div style={styFlexContainer}>
-                    <Paper style={styRightItem} zDepth={1}>
-                        'Imagen'
-                    </Paper>
+                    {/* <Paper style={styRightItem} zDepth={1}>
+                              <PlotlyComponent className="whatever" data={data} layout={layout} config={config}/>
+                    </Paper> */}
                     <Paper style={styLeftItem} zDepth={1}>
 
                         <h1>
@@ -164,8 +222,29 @@ class Dataset extends Component {
                         </ul>
                         <DatasetTask taskId={this.props.dataset.task}/>
                         <RaisedButton label="Delete" style={buttonStyle} onTouchTap={this.handleDeleteDialogOpen} />
+
+                        <Divider/>
+                        <div style={{
+                            flexBasis: '100%'
+                        }}>
+                            <h1>Dataset Status</h1>
+                            <ul>
+                                { this.isRunningTask() ?
+                                    <li>Running Task</li> : <null/>
+                                }
+                                { this.isSearchIndexed() ?
+                                    <li>Entity Autocomplete Search</li> : <null/>
+                                }
+                                { this.isIndexed() ?
+                                    <li>Entity similarity</li> : <null/>
+                                }
+                                { this.isTrained() ?
+                                    <li>Trained</li> : <null/>
+                                }
+                            </ul>
+                        </div>
                     </Paper>
-                    <Paper style={styBottomItem}>
+                    <Paper style={styRightItem}>
                         <Tabs>
                             <Tab label="Insert triples">
                                 <div style={tabPadding}>
@@ -184,6 +263,25 @@ class Dataset extends Component {
                             </Tab>
                           </Tabs>
                     </Paper>
+                    {/* <Paper style={styBottomItem}>
+                        <Tabs>
+                            <Tab label="Insert triples">
+                                <div style={tabPadding}>
+                                    <GenerateTriples datasetId={this.props.dataset.id}/>
+                                </div>
+                            </Tab>
+                            <Tab label="Train dataset" >
+                                <div style={tabPadding}>
+                                    <TrainDataset datasetId={this.props.dataset.id}/>
+                                </div>
+                            </Tab>
+                            <Tab label="Dataset services" >
+                                <div style={tabPadding}>
+                                    <ServicesDataset datasetId={this.props.dataset.id}/>
+                                </div>
+                            </Tab>
+                          </Tabs>
+                    </Paper> */}
                 </div>
                 <Dialog
                     actions={deleteActions}

@@ -44,7 +44,12 @@ class ServicesDataset extends Component {
                 flexWrap: 'wrap',
             }}>
                 <div style={{
-                    flexBasis: '50%',
+                    flexBasis: '100%',
+                }}>
+                    <EntityCard datasetObject={this.state.objectEntity}/>
+                </div>
+                <div style={{
+                    flexBasis: '100%',
                 }}>
                     <p>Select an entity and find similar ones</p>
                     <EntityCompleter
@@ -58,11 +63,6 @@ class ServicesDataset extends Component {
                     />
                 </div>
                 <div style={{
-                    flexBasis: '50%',
-                }}>
-                    <EntityCard datasetObject={this.state.objectEntity}/>
-                </div>
-                <div style={{
                     flexBasis: '100%',
                     display: 'flex',
                     flexWrap: 'wrap'
@@ -72,7 +72,7 @@ class ServicesDataset extends Component {
                              <EntityCard datasetObject={entity}
                                          key={ index }
                                          style={{
-                                             flexBasis: '46.4%'
+                                             flexBasis: '100%'
                                          }}/>
                         )
                     }

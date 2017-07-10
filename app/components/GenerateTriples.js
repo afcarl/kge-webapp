@@ -44,6 +44,9 @@ class GenerateTriples extends Component {
                     value={this.state.graphPattern}
                     floatingLabelText="Graph Pattern"
                     onChange={this.handleGraphPatternChange}
+                    style={{
+                        width: '100%',
+                    }}
                 />
                 <TextField
                     hintText="Max exploration levels"
