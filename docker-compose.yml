@@ -1,0 +1,6 @@
+version: '2'
+services:
+  webapp-kge:
+    build: .
+    ports:
+     - "8080:3000"

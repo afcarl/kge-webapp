@@ -1,5 +1,7 @@
 FROM node:boron
 
+MAINTAINER Víctor Fernández <vfrico@gmail.com>
+
 # Create app directory
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
