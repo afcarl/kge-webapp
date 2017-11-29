@@ -24,6 +24,18 @@ class TasksApi {
             method: 'POST'
         });
     }
+
+    generateIndex(datasetId, nTrees = 100, ignore = true) {
+        return fetch(this.baseUri + '/datasets/' + datasetId + '/generate_index?n_trees=' + nTrees + '&ignore_status=' + ignore, {
+            method: 'POST'
+        });
+    }
+
+    generateIndex(datasetId, ignore = true) {
+        return fetch(this.baseUri + '/datasets/' + datasetId + '/generate_autocomplete_index?ignore_status=' + ignore, {
+            method: 'POST'
+        });
+    }
 }
 
 export default TasksApi;

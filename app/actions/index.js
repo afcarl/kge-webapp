@@ -119,3 +119,17 @@ export function getSimilarEntities(datasetId, entity) {
         entity,
     };
 }
+
+export function apiGenerateSearchTree(datasetId) {
+    return {
+        type: types.POST_GENERATE_SEARCHTREE,
+        datasetId,
+    };
+}
+
+export function generateAutocompleteIndex(datasetId) {
+    return {
+        type: types.POST_GENERATE_AUTOCOMPLETE_INDEX,
+        datasetId
+    };
+}

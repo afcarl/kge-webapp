@@ -2,7 +2,8 @@ import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 
 // Actions
-import { showModalAddAlgorithm, trainDataset, apiGetAlgorithms } from '../actions';
+import { showModalAddAlgorithm, trainDataset, apiGetAlgorithms,
+         apiGenerateSearchTree, generateAutocompleteIndex } from '../actions';
 
 // Custom components
 import AddAlgorithmDialog from './AddAlgorithmDialog';
@@ -27,6 +28,14 @@ class TrainDataset extends Component {
 
     onTrainDataset = () => {
         this.props.trainDataset(this.props.datasetId, this.state.algorithm);
+    }
+    onGenerateSearchTree = () => {
+        console.log("Hoola gen" + this.props.datasetId);
+        this.props.generateSearchTree(this.props.datasetId);
+    }
+    onGenerateAutocompleteIndex = () => {
+        console.log("Hoola autoc" + this.props.datasetId);
+        this.props.generateAutocompleteIndex(this.props.datasetId);
     }
     handleChange = (event, index, algorithm) => {
         this.setState({algorithm});
@@ -70,6 +79,16 @@ class TrainDataset extends Component {
                                   style={buttonStyle}
                                   onTouchTap={this.props.showDialog} />
                 </div>
+                <div>
+                    <RaisedButton label="Generate Search Tree"
+                                   style={buttonStyle}
+                                   onTouchTap={this.onGenerateSearchTree} />
+
+                    <RaisedButton label="Generate autoComplete index"
+                    style={buttonStyle}
+                    onTouchTap={this.onGenerateAutocompleteIndex} />
+
+                </div>
             </div>
         );
     }
@@ -82,6 +101,8 @@ TrainDataset.propTypes = {
     hideDialog: PropTypes.func,
     showModalAddAlgorithm: PropTypes.bool,
     loadAlgorithms: PropTypes.func,
+    generateAutocompleteIndex: PropTypes.func,
+    generateSearchTree: PropTypes.func,
     allAlgorithms: PropTypes.any,
 };
 TrainDataset.displayName = 'TrainDataset';
@@ -101,6 +122,8 @@ const mapDispatchToProps = (dispatch) => {
         showDialog: () => dispatch(showModalAddAlgorithm(true)),
         hideDialog: () => dispatch(showModalAddAlgorithm(false)),
         loadAlgorithms: () => dispatch(apiGetAlgorithms()),
+        generateSearchTree: (datasetId) => dispatch(apiGenerateSearchTree(datasetId)),
+        generateAutocompleteIndex: (datasetId) => dispatch(generateAutocompleteIndex(datasetId))
     };
 };
 

@@ -3,7 +3,7 @@ import { combineReducers } from 'redux';
 import * as types from '../actions/types';
 
 const defaultConfig = {
-    apiRoute: 'http://wiener.dia.fi.upm.es:6789',
+    apiRoute: 'http://valdemoro.dia.fi.upm.es:6789',
     defaultLang: 'en',
 };
 

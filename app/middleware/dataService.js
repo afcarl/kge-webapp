@@ -149,6 +149,16 @@ const dataService = store => next => action => {
             });
             break;
 
+        case types.POST_GENERATE_SEARCHTREE:
+            tasksApi.generateIndex(action.datasetId).then((response) => {
+                return response.json();
+            }).then((task) => {
+                console.log('dataService generateIndex ' + task);
+                // Reloads the dataset to get the task view reloaded
+                return store.dispatch(apiGetDataset(action.datasetId));
+            });
+            break;
+
         default:
             break;
     }
