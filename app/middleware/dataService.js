@@ -159,6 +159,16 @@ const dataService = store => next => action => {
             });
             break;
 
+        case types.POST_GENERATE_AUTOCOMPLETE_INDEX:
+            tasksApi.generateAutocompleteIndex(action.datasetId).then((response) => {
+                return response.json();
+            }).then((task) => {
+                console.log('dataService generateAutocompleteIndex ' + task);
+                // Reloads the dataset to get the task view reloaded
+                return store.dispatch(apiGetDataset(action.datasetId));
+            });
+            break;
+
         default:
             break;
     }

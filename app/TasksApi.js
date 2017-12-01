@@ -31,9 +31,12 @@ class TasksApi {
         });
     }
 
-    generateIndex(datasetId, ignore = true) {
+    generateAutocompleteIndex(datasetId, ignore = true) {
         return fetch(this.baseUri + '/datasets/' + datasetId + '/generate_autocomplete_index?ignore_status=' + ignore, {
-            method: 'POST'
+            method: 'POST',
+            body: JSON.stringify({
+                langs: ['en', 'es']
+            })
         });
     }
 }
