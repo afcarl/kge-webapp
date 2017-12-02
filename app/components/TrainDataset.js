@@ -30,11 +30,9 @@ class TrainDataset extends Component {
         this.props.trainDataset(this.props.datasetId, this.state.algorithm);
     }
     onGenerateSearchTree = () => {
-        console.log("Hoola gen" + this.props.datasetId);
         this.props.generateSearchTree(this.props.datasetId);
     }
     onGenerateAutocompleteIndex = () => {
-        console.log("Hoola autoc" + this.props.datasetId);
         this.props.generateAutocompleteIndex(this.props.datasetId);
     }
     handleChange = (event, index, algorithm) => {

@@ -1,11 +1,8 @@
 import { routerReducer as routing } from 'react-router-redux';
 import { combineReducers } from 'redux';
 import * as types from '../actions/types';
+import { defaultConfig } from '../config.js';
 
-const defaultConfig = {
-    apiRoute: 'http://valdemoro.dia.fi.upm.es:6789',
-    defaultLang: 'en',
-};
 
 function datasetToList(initialDatasetList, newDatasetList) {
     // console.log('tolist', newDatasetList, initialDatasetList);

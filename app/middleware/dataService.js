@@ -153,7 +153,6 @@ const dataService = store => next => action => {
             tasksApi.generateIndex(action.datasetId).then((response) => {
                 return response.json();
             }).then((task) => {
-                console.log('dataService generateIndex ' + task);
                 // Reloads the dataset to get the task view reloaded
                 return store.dispatch(apiGetDataset(action.datasetId));
             });
@@ -163,7 +162,6 @@ const dataService = store => next => action => {
             tasksApi.generateAutocompleteIndex(action.datasetId).then((response) => {
                 return response.json();
             }).then((task) => {
-                console.log('dataService generateAutocompleteIndex ' + task);
                 // Reloads the dataset to get the task view reloaded
                 return store.dispatch(apiGetDataset(action.datasetId));
             });
